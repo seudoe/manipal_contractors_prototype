@@ -212,6 +212,84 @@ export function getFeatureAssignmentsForContractor(
     .map((fa) => ({ ...fa, node: getNodeById(fa.nodeId) }));
 }
 
+export interface ContractorTreeNode {
+  contractor: Contractor;
+  /** distance from the project's main contractor, computed within this project's contractor set */
+  depth: number;
+  features: string[];
+}
+
+export interface ContractorTreeEdge {
+  parentId: string;
+  childId: string;
+}
+
+/**
+ * The "who hired whom" hierarchy for a project, restricted to the
+ * contractors actually linked to it via project_contractors — plus which
+ * features each of them is responsible for. Used to render the contractor
+ * hierarchy as a graph (main contractor at top, subcontractors below).
+ */
+export function getProjectContractorTree(
+  projectId: string
+): { nodes: ContractorTreeNode[]; edges: ContractorTreeEdge[] } {
+  const inProject = getProjectContractors(projectId)
+    .map((pc) => pc.contractor)
+    .filter((c): c is Contractor => Boolean(c));
+  const idsInProject = new Set(inProject.map((c) => c.id));
+
+  function depthOf(contractor: Contractor): number {
+    let depth = 0;
+    let current = contractor;
+    while (current.parentContractorId && idsInProject.has(current.parentContractorId)) {
+      const parent = getContractorById(current.parentContractorId);
+      if (!parent) break;
+      depth++;
+      current = parent;
+    }
+    return depth;
+  }
+
+  const treeNodes: ContractorTreeNode[] = inProject.map((contractor) => ({
+    contractor,
+    depth: depthOf(contractor),
+    features: getFeatureAssignmentsForContractor(projectId, contractor.id)
+      .map((fa) => fa.node?.name)
+      .filter((n): n is string => Boolean(n)),
+  }));
+
+  const treeEdges: ContractorTreeEdge[] = inProject
+    .filter((c) => c.parentContractorId && idsInProject.has(c.parentContractorId))
+    .map((c) => ({ parentId: c.parentContractorId as string, childId: c.id }));
+
+  return { nodes: treeNodes, edges: treeEdges };
+}
+
+export interface SubcontractedNodeGroup {
+  contractorId: string;
+  contractorName: string;
+  nodeIds: string[];
+}
+
+/**
+ * Nodes handed off to a subcontractor (assignmentType SUBCONTRACTED),
+ * grouped by contractor — used to draw the "this work belongs to X" box
+ * around a cluster of nodes in the project graph.
+ */
+export function getSubcontractedNodeGroups(projectId: string): SubcontractedNodeGroup[] {
+  const byContractor = new Map<string, string[]>();
+  for (const fa of featureAssignments) {
+    if (fa.projectId !== projectId || fa.assignmentType !== "SUBCONTRACTED") continue;
+    if (!byContractor.has(fa.contractorId)) byContractor.set(fa.contractorId, []);
+    byContractor.get(fa.contractorId)!.push(fa.nodeId);
+  }
+  return [...byContractor.entries()].map(([contractorId, nodeIds]) => ({
+    contractorId,
+    contractorName: getContractorById(contractorId)?.name ?? contractorId,
+    nodeIds,
+  }));
+}
+
 // ---------------------------------------------------------------------------
 // Versions & changes
 // ---------------------------------------------------------------------------
