@@ -1,13 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  findUserByEmail,
-  roleHomePath,
-  users,
-  type GlobalRole,
-} from "@/lib/auth";
-import { setSessionUser, clearSessionUser } from "@/lib/session";
+import type { GlobalRole } from "@/types/user";
+import { findUserByEmail, createUser, getUsers } from "@/db/queries";
+import { setSessionUser, clearSessionUser, roleHomePath } from "@/lib/session";
 
 export interface AuthFormState {
   error?: string;
@@ -26,7 +22,7 @@ export async function login(
   }
 
   await setSessionUser(user.id);
-  redirect(roleHomePath(user.global_role));
+  redirect(roleHomePath(user.globalRole));
 }
 
 export async function register(
@@ -36,41 +32,30 @@ export async function register(
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
-  const global_role = String(formData.get("global_role") ?? "") as GlobalRole;
+  const globalRole = String(formData.get("global_role") ?? "") as GlobalRole;
 
   if (!name || !email || !password) {
     return { error: "All fields are required." };
   }
-  if (!["STAKEHOLDER", "CONTRACTOR", "INSPECTOR"].includes(global_role)) {
+  if (!["STAKEHOLDER", "CONTRACTOR", "INSPECTOR"].includes(globalRole)) {
     return { error: "Please choose a role." };
   }
   if (findUserByEmail(email)) {
     return { error: "An account with that email already exists." };
   }
 
-  const now = new Date().toISOString();
-  const newUser = {
-    id: `u-${users.length + 1}`,
-    email,
-    name,
-    avatar_url: null,
-    global_role,
-    password,
-    created_at: now,
-    updated_at: now,
-  };
-  users.push(newUser);
+  const newUser = createUser({ name, email, password, globalRole });
 
   await setSessionUser(newUser.id);
-  redirect(roleHomePath(newUser.global_role));
+  redirect(roleHomePath(newUser.globalRole));
 }
 
 export async function quickLogin(role: GlobalRole) {
-  const user = users.find((u) => u.global_role === role);
+  const user = getUsers().find((u) => u.globalRole === role);
   if (!user) return;
 
   await setSessionUser(user.id);
-  redirect(roleHomePath(user.global_role));
+  redirect(roleHomePath(user.globalRole));
 }
 
 export async function logout() {

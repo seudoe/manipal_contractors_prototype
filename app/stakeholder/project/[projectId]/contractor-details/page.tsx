@@ -1,5 +1,10 @@
-import { ComingSoon } from "@/components/coming-soon";
+import { ProjectContractorDetailsView } from "@/components/project-contractor-details-view";
 
-export default function Page() {
-  return <ComingSoon title="Contractor Details" />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ projectId: string }>;
+}) {
+  const { projectId } = await params;
+  return <ProjectContractorDetailsView projectId={projectId} />;
 }

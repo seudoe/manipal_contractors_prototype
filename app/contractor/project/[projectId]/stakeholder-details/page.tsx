@@ -1,5 +1,10 @@
-import { ComingSoon } from "@/components/coming-soon";
+import { ProjectStakeholdersView } from "@/components/project-stakeholders-view";
 
-export default function Page() {
-  return <ComingSoon title="Stakeholder Details" />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ projectId: string }>;
+}) {
+  const { projectId } = await params;
+  return <ProjectStakeholdersView projectId={projectId} />;
 }

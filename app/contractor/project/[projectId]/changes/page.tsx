@@ -1,5 +1,10 @@
-import { ComingSoon } from "@/components/coming-soon";
+import { ProjectChangesView } from "@/components/project-changes-view";
 
-export default function Page() {
-  return <ComingSoon title="Changes" />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ projectId: string }>;
+}) {
+  const { projectId } = await params;
+  return <ProjectChangesView projectId={projectId} />;
 }

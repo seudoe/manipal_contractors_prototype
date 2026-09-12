@@ -8,7 +8,7 @@ export default async function ContractorLayout({
   children: React.ReactNode;
 }) {
   const user = await getSessionUser();
-  if (!user || user.global_role !== "CONTRACTOR") {
+  if (!user || user.globalRole !== "CONTRACTOR") {
     redirect("/");
   }
 

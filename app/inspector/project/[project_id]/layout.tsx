@@ -1,8 +1,11 @@
-import { ProjectSidebar } from "@/components/project-sidebar";
+import { notFound } from "next/navigation";
+import { ProjectSidebar, type ProjectTab } from "@/components/project-sidebar";
+import { ProjectHeader } from "@/components/project-header";
+import { getProjectById } from "@/db/queries";
 
-const TABS = [
-  { label: "Changes", segment: "changes" },
-  { label: "Graph", segment: "graph" },
+const TABS: ProjectTab[] = [
+  { label: "Changes", segment: "changes", icon: "History" },
+  { label: "Graph", segment: "graph", icon: "Network" },
 ];
 
 export default async function InspectorProjectLayout({
@@ -15,10 +18,20 @@ export default async function InspectorProjectLayout({
   const { project_id } = await params;
   const basePath = `/inspector/project/${project_id}`;
 
+  const project = getProjectById(project_id);
+  if (!project) notFound();
+
+  // Inspectors aren't scoped to specific projects in the spec (no
+  // inspector<->project link table yet), so no access check here — see
+  // getProjectsForUser's note in db/queries.ts.
+
   return (
     <div className="flex flex-1 -m-8">
       <ProjectSidebar basePath={basePath} tabs={TABS} />
-      <div className="flex flex-1 flex-col p-8">{children}</div>
+      <div className="flex flex-1 flex-col p-8">
+        <ProjectHeader project={project} />
+        {children}
+      </div>
     </div>
   );
 }

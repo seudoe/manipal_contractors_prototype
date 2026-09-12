@@ -8,7 +8,7 @@ export default async function StakeholderLayout({
   children: React.ReactNode;
 }) {
   const user = await getSessionUser();
-  if (!user || user.global_role !== "STAKEHOLDER") {
+  if (!user || user.globalRole !== "STAKEHOLDER") {
     redirect("/");
   }
 

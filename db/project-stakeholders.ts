@@ -1,0 +1,17 @@
+import type { ProjectStakeholder } from "@/types/project";
+
+/**
+ * Each project is shared between 2 stakeholders (one OWNER, one EDITOR).
+ * The 3 stakeholders rotate across the 3 projects so each of them sits on
+ * exactly two.
+ */
+export const projectStakeholders: ProjectStakeholder[] = [
+  { id: "ps-1", projectId: "project-1", userId: "user-st-1", role: "OWNER", createdAt: "2025-03-15T00:00:00.000Z" },
+  { id: "ps-2", projectId: "project-1", userId: "user-st-2", role: "EDITOR", createdAt: "2025-03-15T00:00:00.000Z" },
+
+  { id: "ps-3", projectId: "project-2", userId: "user-st-2", role: "OWNER", createdAt: "2025-05-10T00:00:00.000Z" },
+  { id: "ps-4", projectId: "project-2", userId: "user-st-3", role: "EDITOR", createdAt: "2025-05-10T00:00:00.000Z" },
+
+  { id: "ps-5", projectId: "project-3", userId: "user-st-3", role: "OWNER", createdAt: "2026-08-20T00:00:00.000Z" },
+  { id: "ps-6", projectId: "project-3", userId: "user-st-1", role: "EDITOR", createdAt: "2026-08-20T00:00:00.000Z" },
+];

@@ -8,7 +8,7 @@ export default async function InspectorLayout({
   children: React.ReactNode;
 }) {
   const user = await getSessionUser();
-  if (!user || user.global_role !== "INSPECTOR") {
+  if (!user || user.globalRole !== "INSPECTOR") {
     redirect("/");
   }
 

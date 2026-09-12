@@ -1,16 +1,21 @@
-import Link from "next/link";
-import { ComingSoon } from "@/components/coming-soon";
+import { FolderKanban } from "lucide-react";
+import { ProjectList } from "@/components/project-list";
+import { getSessionUser } from "@/lib/session";
+import { getProjectsForUser } from "@/db/queries";
 
-export default function Page() {
+export default async function Page() {
+  const user = await getSessionUser();
+  const projects = user ? getProjectsForUser(user.id) : [];
+
   return (
     <div className="flex flex-1 flex-col gap-4">
-      <ComingSoon title="Projects" />
-      <Link
-        href="/stakeholder/project/demo-project-1"
-        className="self-center text-sm font-medium text-black underline dark:text-white"
-      >
-        Open demo project →
-      </Link>
+      <div className="flex items-center gap-2">
+        <FolderKanban size={20} className="text-zinc-400" />
+        <h1 className="text-lg font-semibold text-black dark:text-zinc-50">
+          Projects
+        </h1>
+      </div>
+      <ProjectList projects={projects} basePath="/stakeholder/project" />
     </div>
   );
 }

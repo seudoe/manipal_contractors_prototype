@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FolderKanban, UserCircle, Settings, Bell, LogOut } from "lucide-react";
 import { logout } from "@/app/actions";
-import type { GlobalRole } from "@/lib/auth";
+import type { GlobalRole } from "@/types/user";
 
 const GLOBAL_NAV = [
-  { label: "Projects", segment: "projects" },
-  { label: "Profile", segment: "profile" },
-  { label: "Settings", segment: "settings" },
-  { label: "Notifications", segment: "notifications" },
+  { label: "Projects", segment: "projects", icon: FolderKanban },
+  { label: "Profile", segment: "profile", icon: UserCircle },
+  { label: "Settings", segment: "settings", icon: Settings },
+  { label: "Notifications", segment: "notifications", icon: Bell },
 ];
 
 export function RoleShell({
@@ -47,20 +48,22 @@ export function RoleShell({
             {GLOBAL_NAV.map((item) => {
               const href = `${base}/${item.segment}`;
               const active = pathname === href;
+              const Icon = item.icon;
               return (
                 <Link
                   key={item.segment}
                   href={href}
                   title={item.label}
-                  className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    inProject ? "text-center" : ""
+                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    inProject ? "justify-center" : ""
                   } ${
                     active
                       ? "bg-black text-white dark:bg-white dark:text-black"
                       : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
                   }`}
                 >
-                  {inProject ? item.label.charAt(0) : item.label}
+                  <Icon size={18} strokeWidth={2} />
+                  {!inProject && item.label}
                 </Link>
               );
             })}
@@ -69,9 +72,13 @@ export function RoleShell({
         <form action={logout}>
           <button
             type="submit"
-            className="w-full rounded-lg px-3 py-2 text-sm font-medium text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+            title="Log out"
+            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 ${
+              inProject ? "justify-center" : ""
+            }`}
           >
-            {inProject ? "⏻" : "Log out"}
+            <LogOut size={18} strokeWidth={2} />
+            {!inProject && "Log out"}
           </button>
         </form>
       </aside>

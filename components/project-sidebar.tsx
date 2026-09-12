@@ -2,10 +2,35 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  ClipboardList,
+  Network,
+  Users,
+  Building2,
+  History,
+  Bell,
+  Settings,
+  type LucideIcon,
+} from "lucide-react";
+
+const ICONS = {
+  LayoutDashboard,
+  ClipboardList,
+  Network,
+  Users,
+  Building2,
+  History,
+  Bell,
+  Settings,
+} satisfies Record<string, LucideIcon>;
+
+export type ProjectTabIcon = keyof typeof ICONS;
 
 export interface ProjectTab {
   label: string;
   segment: string;
+  icon: ProjectTabIcon;
 }
 
 export function ProjectSidebar({
@@ -25,16 +50,18 @@ export function ProjectSidebar({
       {tabs.map((tab) => {
         const href = tab.segment ? `${basePath}/${tab.segment}` : basePath;
         const active = pathname === href;
+        const Icon = ICONS[tab.icon];
         return (
           <Link
             key={tab.label}
             href={href}
-            className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+            className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
               active
                 ? "bg-black text-white dark:bg-white dark:text-black"
                 : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
             }`}
           >
+            <Icon size={18} strokeWidth={2} />
             {tab.label}
           </Link>
         );
