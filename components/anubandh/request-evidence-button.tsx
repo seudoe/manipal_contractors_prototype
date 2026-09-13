@@ -23,7 +23,7 @@ export function RequestEvidenceButton() {
   return (
     <button
       onClick={() => setSent(true)}
-      className="flex items-center gap-2 rounded-lg bg-black px-3 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+      className="flex items-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:text-white dark:hover:bg-indigo-400"
     >
       <FileSearch size={16} />
       Request evidence

@@ -22,8 +22,8 @@ export function ReportConcernForm() {
   }
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
-      <p className="flex items-center gap-2 text-sm font-semibold text-black dark:text-zinc-50">
+    <div className="flex flex-col gap-2 rounded-xl border border-indigo-200 bg-white p-4 dark:border-indigo-800/40 dark:bg-slate-900">
+      <p className="flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-50">
         <Megaphone size={16} /> Report a concern
       </p>
       <textarea
@@ -31,15 +31,15 @@ export function ReportConcernForm() {
         onChange={(e) => setText(e.target.value)}
         placeholder="Describe what you observed..."
         rows={3}
-        className="rounded-lg border border-black/10 bg-transparent p-2 text-sm dark:border-white/10"
+        className="rounded-lg border border-indigo-200 bg-transparent p-2 text-sm dark:border-indigo-800/40"
       />
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-slate-500">
         A citizen report can open a case but never close one.
       </p>
       <button
         disabled={!text.trim()}
         onClick={() => setSubmitted(true)}
-        className="self-start rounded-lg bg-black px-3 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+        className="self-start rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-indigo-500 dark:text-white dark:hover:bg-indigo-400"
       >
         Submit
       </button>

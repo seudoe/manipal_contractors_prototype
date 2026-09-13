@@ -20,10 +20,10 @@ export default async function Page({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold text-black dark:text-zinc-50">
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">
           Override — {gateEvent.checkpointLabel}
         </h1>
-        <p className="text-sm text-zinc-500">{project?.name}</p>
+        <p className="text-sm text-slate-500">{project?.name}</p>
       </div>
 
       <DecisionCard
@@ -36,7 +36,7 @@ export default async function Page({
 
       <OverrideConfirm officerName={officerName} />
 
-      <span className="inline-flex w-fit items-center gap-1 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+      <span className="inline-flex w-fit items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
         Chain intact
       </span>
     </div>

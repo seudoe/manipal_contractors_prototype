@@ -14,23 +14,23 @@ export function PriorityPanel({
   priority: number;
 }) {
   return (
-    <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+    <div className="rounded-xl border border-indigo-200 bg-white p-4 dark:border-indigo-800/40 dark:bg-slate-900">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
         Priority breakdown
       </p>
       <ul className="flex flex-col gap-1.5">
         {factors.map((f) => (
           <li key={f.label} className="flex items-center justify-between text-sm">
-            <span className="text-zinc-600 dark:text-zinc-300">{f.label}</span>
-            <span className="font-mono font-medium text-black dark:text-zinc-50">{f.value}</span>
+            <span className="text-slate-600 dark:text-slate-300">{f.label}</span>
+            <span className="font-mono font-medium text-slate-900 dark:text-slate-50">{f.value}</span>
           </li>
         ))}
       </ul>
-      <div className="mt-3 flex items-center justify-between border-t border-black/5 pt-3 dark:border-white/10">
-        <span className="text-sm font-semibold text-black dark:text-zinc-50">
+      <div className="mt-3 flex items-center justify-between border-t border-black/5 pt-3 dark:border-indigo-800/40">
+        <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
           Priority score
         </span>
-        <span className="rounded-md bg-black px-2 py-1 font-mono text-sm font-bold text-white dark:bg-white dark:text-black">
+        <span className="rounded-md bg-indigo-600 px-2 py-1 font-mono text-sm font-bold text-white dark:bg-indigo-500 dark:text-white">
           {priority.toFixed(1)}
         </span>
       </div>

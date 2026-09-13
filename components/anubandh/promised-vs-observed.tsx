@@ -20,27 +20,27 @@ export function PromisedVsObserved({
 }) {
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
-      <div className="rounded-lg border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
-        <p className="text-xs font-medium text-zinc-400">{promisedLabel}</p>
-        <p className="mt-1 text-sm font-medium text-black dark:text-zinc-50">{promisedText}</p>
+      <div className="rounded-lg border border-indigo-200 bg-white p-3 dark:border-indigo-800/40 dark:bg-slate-900">
+        <p className="text-xs font-medium text-slate-400">{promisedLabel}</p>
+        <p className="mt-1 text-sm font-medium text-slate-900 dark:text-slate-50">{promisedText}</p>
       </div>
 
-      <ArrowRight size={18} className="mx-auto hidden text-zinc-300 sm:block" />
+      <ArrowRight size={18} className="mx-auto hidden text-slate-300 sm:block" />
 
       {silence ? (
-        <div className="flex items-center gap-2 rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-900/50">
-          <CircleOff size={18} className="shrink-0 text-zinc-400" />
+        <div className="flex items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/50">
+          <CircleOff size={18} className="shrink-0 text-slate-400" />
           <div>
-            <p className="text-xs font-medium text-zinc-400">{observedLabel}</p>
-            <p className="mt-1 text-sm font-medium text-zinc-500">
+            <p className="text-xs font-medium text-slate-400">{observedLabel}</p>
+            <p className="mt-1 text-sm font-medium text-slate-500">
               Expected evidence never arrived
             </p>
           </div>
         </div>
       ) : (
-        <div className="rounded-lg border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
-          <p className="text-xs font-medium text-zinc-400">{observedLabel}</p>
-          <p className="mt-1 text-sm font-medium text-black dark:text-zinc-50">{observedText}</p>
+        <div className="rounded-lg border border-indigo-200 bg-white p-3 dark:border-indigo-800/40 dark:bg-slate-900">
+          <p className="text-xs font-medium text-slate-400">{observedLabel}</p>
+          <p className="mt-1 text-sm font-medium text-slate-900 dark:text-slate-50">{observedText}</p>
         </div>
       )}
     </div>

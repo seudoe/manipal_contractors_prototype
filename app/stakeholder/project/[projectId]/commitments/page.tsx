@@ -16,8 +16,8 @@ export default async function Page({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-xl font-semibold text-black dark:text-zinc-50">Commitment Review</h1>
-        <p className="max-w-2xl text-sm text-zinc-500">
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Commitment Review</h1>
+        <p className="max-w-2xl text-sm text-slate-500">
           This is the only point where a human configures the system, and it takes about ten
           minutes per contract — every screen downstream just reads what gets set here.
         </p>

@@ -14,7 +14,7 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 const PRIORITY_STYLES: Record<string, string> = {
-  LOW: "text-zinc-500",
+  LOW: "text-slate-500",
   MEDIUM: "text-amber-600 dark:text-amber-400",
   HIGH: "text-red-600 dark:text-red-400",
 };
@@ -28,7 +28,7 @@ export function ProjectChangesView({ projectId }: { projectId: string }) {
 
   if (changes.length === 0) {
     return (
-      <p className="rounded-xl border border-dashed border-black/10 p-8 text-center text-sm text-zinc-500 dark:border-white/15">
+      <p className="rounded-xl border border-dashed border-indigo-200 p-8 text-center text-sm text-slate-500 dark:border-indigo-800/50">
         No changes recorded yet — this project is still on its baseline.
       </p>
     );
@@ -45,15 +45,15 @@ export function ProjectChangesView({ projectId }: { projectId: string }) {
         return (
           <div
             key={change.id}
-            className="flex flex-col gap-3 rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900"
+            className="flex flex-col gap-3 rounded-xl border border-indigo-200 bg-white p-4 dark:border-indigo-800/40 dark:bg-slate-900"
           >
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
-                <p className="text-sm font-semibold text-black dark:text-zinc-50">
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                   {change.changeType.replaceAll("_", " ")}
-                  {node && <span className="font-normal text-zinc-500"> · {node.name}</span>}
+                  {node && <span className="font-normal text-slate-500"> · {node.name}</span>}
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-slate-500">
                   {author?.name ?? change.createdBy} · {new Date(change.createdAt).toLocaleDateString()}
                 </p>
               </div>
@@ -68,21 +68,21 @@ export function ProjectChangesView({ projectId }: { projectId: string }) {
 
             {(change.oldValue !== undefined || change.newValue !== undefined) && (
               <div className="flex flex-wrap items-center gap-2 text-sm">
-                <span className="rounded bg-zinc-100 px-2 py-1 font-mono text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <span className="rounded bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                   {String(change.oldValue ?? "—")}
                 </span>
-                <span className="text-zinc-400">→</span>
-                <span className="rounded bg-zinc-100 px-2 py-1 font-mono text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <span className="text-slate-400">→</span>
+                <span className="rounded bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                   {String(change.newValue ?? "—")}
                 </span>
               </div>
             )}
 
             {change.reason && (
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">{change.reason}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">{change.reason}</p>
             )}
 
-            <div className="flex flex-wrap items-center gap-4 border-t border-black/5 pt-3 text-xs text-zinc-500 dark:border-white/5">
+            <div className="flex flex-wrap items-center gap-4 border-t border-black/5 pt-3 text-xs text-slate-500 dark:border-white/5">
               {risk && (
                 <span>
                   Risk score: <strong className={PRIORITY_STYLES[risk.priority]}>{risk.score} ({risk.priority})</strong>

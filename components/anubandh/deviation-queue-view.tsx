@@ -49,11 +49,11 @@ export function DeviationQueueView({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
+      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-indigo-200 bg-white p-3 dark:border-indigo-800/40 dark:bg-slate-900">
         <select
           value={levelFilter}
           onChange={(e) => setLevelFilter(e.target.value as DeviationLevel | "ALL")}
-          className="rounded-md border border-black/10 bg-transparent px-2 py-1.5 text-sm dark:border-white/10"
+          className="rounded-md border border-indigo-200 bg-transparent px-2 py-1.5 text-sm dark:border-indigo-800/40"
         >
           <option value="ALL">All levels</option>
           {LEVELS.map((l) => (
@@ -67,7 +67,7 @@ export function DeviationQueueView({
           <select
             value={projectFilter}
             onChange={(e) => setProjectFilter(e.target.value)}
-            className="rounded-md border border-black/10 bg-transparent px-2 py-1.5 text-sm dark:border-white/10"
+            className="rounded-md border border-indigo-200 bg-transparent px-2 py-1.5 text-sm dark:border-indigo-800/40"
           >
             <option value="ALL">All projects</option>
             {projectNames.map((p) => (
@@ -78,7 +78,7 @@ export function DeviationQueueView({
           </select>
         )}
 
-        <label className="ml-auto flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300">
+        <label className="ml-auto flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
           <input
             type="checkbox"
             checked={hideCosmetic}
@@ -87,7 +87,7 @@ export function DeviationQueueView({
           Hide cosmetic (L0/L1)
         </label>
       </div>
-      <p className="-mt-2 text-xs text-zinc-500">
+      <p className="-mt-2 text-xs text-slate-500">
         Most deviations are innocent — an undifferentiated list of every one is what makes
         officers stop looking. Hiding cosmetic noise by default keeps the queue meaningful.
       </p>
@@ -98,10 +98,10 @@ export function DeviationQueueView({
           description="Try clearing a filter or turning off the cosmetic toggle."
         />
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-black/10 dark:border-white/10">
+        <div className="overflow-x-auto rounded-xl border border-indigo-200 dark:border-indigo-800/40">
           <table className="w-full min-w-[720px] border-collapse text-sm">
             <thead>
-              <tr className="border-b border-black/10 bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-400 dark:border-white/10 dark:bg-zinc-900">
+              <tr className="border-b border-indigo-200 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-400 dark:border-indigo-800/40 dark:bg-slate-900">
                 <th className="px-4 py-2 font-medium">Level</th>
                 <th className="px-4 py-2 font-medium">Title</th>
                 <th className="px-4 py-2 font-medium">Project</th>
@@ -114,7 +114,7 @@ export function DeviationQueueView({
               {filtered.map(({ deviation, projectName, href }) => (
                 <tr
                   key={deviation.id}
-                  className="border-b border-black/5 last:border-0 hover:bg-zinc-50 dark:border-white/5 dark:hover:bg-zinc-900"
+                  className="border-b border-black/5 last:border-0 hover:bg-slate-50 dark:border-white/5 dark:hover:bg-slate-900"
                 >
                   <td className="px-4 py-3">
                     <Link href={href} className="block">
@@ -122,17 +122,17 @@ export function DeviationQueueView({
                     </Link>
                   </td>
                   <td className="px-4 py-3">
-                    <Link href={href} className="font-medium text-black hover:underline dark:text-zinc-50">
+                    <Link href={href} className="font-medium text-slate-900 hover:underline dark:text-slate-50">
                       {deviation.title}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-zinc-500">{projectName}</td>
-                  <td className="px-4 py-3 text-zinc-700 dark:text-zinc-300">
+                  <td className="px-4 py-3 text-slate-500">{projectName}</td>
+                  <td className="px-4 py-3 text-slate-700 dark:text-slate-300">
                     {deviation.valueAtRisk > 0
                       ? `Rs ${deviation.valueAtRisk.toLocaleString("en-IN")}`
                       : "—"}
                   </td>
-                  <td className="px-4 py-3 font-mono text-zinc-700 dark:text-zinc-300">
+                  <td className="px-4 py-3 font-mono text-slate-700 dark:text-slate-300">
                     {deviation.priority.toFixed(1)}
                   </td>
                   <td className="px-4 py-3">

@@ -68,7 +68,7 @@ export function DecisionCard({
             >
               {meta.label}
             </p>
-            <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
               Level {level}
             </p>
           </div>
@@ -77,19 +77,19 @@ export function DecisionCard({
       </div>
 
       {valueAtRisk > 0 && (
-        <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
           Value at risk:{" "}
-          <span className="font-semibold text-black dark:text-white">
+          <span className="font-semibold text-slate-900 dark:text-white">
             Rs {valueAtRisk.toLocaleString("en-IN")}
           </span>
         </p>
       )}
 
       {reasons.length > 0 && (
-        <ul className="flex flex-col gap-1.5 border-t border-black/10 pt-4 text-sm dark:border-white/10">
+        <ul className="flex flex-col gap-1.5 border-t border-indigo-200 pt-4 text-sm dark:border-indigo-800/40">
           {reasons.map((reason) => (
-            <li key={reason} className="flex gap-2 text-zinc-700 dark:text-zinc-300">
-              <span className="select-none text-zinc-400">-</span>
+            <li key={reason} className="flex gap-2 text-slate-700 dark:text-slate-300">
+              <span className="select-none text-slate-400">-</span>
               {reason}
             </li>
           ))}

@@ -11,8 +11,8 @@ export default async function Page() {
     <div className="flex flex-1 flex-col gap-4">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <FolderKanban size={20} className="text-zinc-400" />
-          <h1 className="text-lg font-semibold text-black dark:text-zinc-50">
+          <FolderKanban size={20} className="text-slate-400" />
+          <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
             Projects
           </h1>
         </div>
@@ -20,7 +20,7 @@ export default async function Page() {
             them, not the other way around. No-op for now. */}
         <button
           type="button"
-          className="inline-flex items-center gap-1.5 rounded-full bg-black px-3.5 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+          className="inline-flex items-center gap-1.5 rounded-full bg-indigo-600 px-3.5 py-2 text-sm font-medium text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:text-white dark:hover:bg-indigo-400"
         >
           <Plus size={16} />
           New Project

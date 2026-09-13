@@ -38,11 +38,11 @@ export function EvidencePhoto({
     >
       <Camera
         size={size === "lg" ? 40 : size === "md" ? 22 : 14}
-        className="text-black/30 dark:text-black/40"
+        className="text-slate-900/30 dark:text-white/40"
         strokeWidth={1.5}
       />
       {caption && size === "lg" && (
-        <span className="absolute bottom-2 left-2 rounded bg-black/50 px-1.5 py-0.5 text-[10px] text-white">
+        <span className="absolute bottom-2 left-2 rounded bg-indigo-600/50 px-1.5 py-0.5 text-[10px] text-white">
           {caption}
         </span>
       )}

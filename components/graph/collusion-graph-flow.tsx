@@ -103,7 +103,7 @@ export function CollusionGraphFlow({
   }, [nodes, edges, activeFindingId]);
 
   return (
-    <div className="h-[55vh] w-full overflow-hidden rounded-xl border border-black/10 dark:border-white/10">
+    <div className="h-[55vh] w-full overflow-hidden rounded-xl border border-indigo-200 dark:border-indigo-800/40">
       <ReactFlow
         nodes={flowNodes}
         edges={flowEdges}

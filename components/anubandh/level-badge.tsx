@@ -11,7 +11,7 @@ const LEVEL_META: Record<
 > = {
   L0: {
     name: "Cosmetic",
-    className: "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400",
+    className: "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400",
   },
   L1: {
     name: "Minor",

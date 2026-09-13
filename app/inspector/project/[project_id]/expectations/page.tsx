@@ -36,11 +36,11 @@ export default async function Page({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-xl font-semibold text-black dark:text-zinc-50">Expectations</h1>
+      <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Expectations</h1>
 
       {impliedEvidence && (
-        <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+        <div className="rounded-xl border border-indigo-200 bg-white p-4 dark:border-indigo-800/40 dark:bg-slate-900">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
             Implied evidence
           </p>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -53,7 +53,7 @@ export default async function Page({
               tone="text-red-600 dark:text-red-400"
             />
           </div>
-          <p className="mt-3 text-xs text-zinc-500">{impliedEvidence.caption}</p>
+          <p className="mt-3 text-xs text-slate-500">{impliedEvidence.caption}</p>
         </div>
       )}
 
@@ -71,7 +71,7 @@ export default async function Page({
           <div key={status}>
             <p
               className={`mb-2 text-xs font-semibold uppercase tracking-wide ${
-                status === "MISSING" ? "text-red-500" : "text-zinc-400"
+                status === "MISSING" ? "text-red-500" : "text-slate-400"
               }`}
             >
               {GROUP_LABEL[status]} ({rows.length})
@@ -91,8 +91,8 @@ export default async function Page({
 function Metric({ label, value, tone }: { label: string; value: string; tone?: string }) {
   return (
     <div>
-      <p className="text-xs text-zinc-500">{label}</p>
-      <p className={`text-lg font-semibold ${tone ?? "text-black dark:text-zinc-50"}`}>{value}</p>
+      <p className="text-xs text-slate-500">{label}</p>
+      <p className={`text-lg font-semibold ${tone ?? "text-slate-900 dark:text-slate-50"}`}>{value}</p>
     </div>
   );
 }
@@ -105,14 +105,14 @@ function ExpectationRow({ expectation, dominant }: { expectation: Expectation; d
       className={`flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4 ${
         dominant
           ? "border-red-300 bg-red-50 dark:border-red-800 dark:bg-red-950"
-          : "border-black/10 bg-white dark:border-white/10 dark:bg-zinc-900"
+          : "border-indigo-200 bg-white dark:border-indigo-800/40 dark:bg-slate-900"
       }`}
     >
       <div className="flex items-start gap-2">
         {dominant && <AlertCircle size={18} className="mt-0.5 shrink-0 text-red-600 dark:text-red-400" />}
         <div>
-          <p className="text-sm font-medium text-black dark:text-zinc-50">{expectation.expectedLabel}</p>
-          <p className="text-xs text-zinc-500">
+          <p className="text-sm font-medium text-slate-900 dark:text-slate-50">{expectation.expectedLabel}</p>
+          <p className="text-xs text-slate-500">
             From {actor?.name ?? "unknown party"} — due {expectation.dueLabel}
           </p>
         </div>

@@ -38,7 +38,7 @@ export function TimelineView({ entries }: { entries: TimelineEntry[] }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-indigo-200 bg-white p-3 dark:border-indigo-800/40 dark:bg-slate-900">
         {ALL_TYPES.map((type) => {
           const meta = TYPE_META[type];
           const Icon = meta.icon;
@@ -49,8 +49,8 @@ export function TimelineView({ entries }: { entries: TimelineEntry[] }) {
               onClick={() => toggle(type)}
               className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
                 active
-                  ? "border-black/20 bg-zinc-100 text-black dark:border-white/20 dark:bg-zinc-800 dark:text-zinc-50"
-                  : "border-transparent text-zinc-400 hover:text-zinc-600"
+                  ? "border-black/20 bg-slate-100 text-slate-900 dark:border-white/20 dark:bg-slate-800 dark:text-slate-50"
+                  : "border-transparent text-slate-400 hover:text-slate-600"
               }`}
             >
               <Icon size={13} />
@@ -60,7 +60,7 @@ export function TimelineView({ entries }: { entries: TimelineEntry[] }) {
         })}
       </div>
 
-      <ol className="relative flex flex-col gap-4 border-l border-black/10 pl-6 dark:border-white/10">
+      <ol className="relative flex flex-col gap-4 border-l border-indigo-200 pl-6 dark:border-indigo-800/40">
         {filtered.map((entry) => {
           const meta = TYPE_META[entry.type];
           const Icon = meta.icon;
@@ -71,32 +71,32 @@ export function TimelineView({ entries }: { entries: TimelineEntry[] }) {
               >
                 <Icon size={13} />
               </span>
-              <div className="flex flex-col gap-1 rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
+              <div className="flex flex-col gap-1 rounded-xl border border-indigo-200 bg-white p-3 dark:border-indigo-800/40 dark:bg-slate-900">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-slate-400">
                     {new Date(entry.at).toLocaleString()}
                   </p>
                   <div className="flex items-center gap-1.5">
                     {entry.level && <LevelBadge level={entry.level} size="sm" />}
                     {entry.decision && (
-                      <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                         {entry.decision === "PASS_WITH_EVIDENCE" ? "Proof needed" : entry.decision}
                       </span>
                     )}
                   </div>
                 </div>
                 {entry.href ? (
-                  <Link href={entry.href} className="font-medium text-black hover:underline dark:text-zinc-50">
+                  <Link href={entry.href} className="font-medium text-slate-900 hover:underline dark:text-slate-50">
                     {entry.title}
                   </Link>
                 ) : (
-                  <p className="font-medium text-black dark:text-zinc-50">{entry.title}</p>
+                  <p className="font-medium text-slate-900 dark:text-slate-50">{entry.title}</p>
                 )}
-                <p className="text-xs text-zinc-500">{entry.description}</p>
+                <p className="text-xs text-slate-500">{entry.description}</p>
                 {entry.isPhoto && (
                   <div className="mt-1 flex items-center gap-2">
                     <EvidencePhoto seed={entry.id} size="sm" />
-                    <span className="flex items-center gap-1 text-[10px] text-zinc-400">
+                    <span className="flex items-center gap-1 text-[10px] text-slate-400">
                       <Camera size={11} /> Photo evidence attached
                     </span>
                   </div>

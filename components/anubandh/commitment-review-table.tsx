@@ -17,10 +17,10 @@ export function CommitmentReviewTable({ commitments }: { commitments: Commitment
   const [overrides, setOverrides] = useState<Record<string, { criticality: CommitmentCriticality; toleranceBand: CommitmentToleranceBand }>>({});
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-black/10 dark:border-white/10">
+    <div className="overflow-x-auto rounded-xl border border-indigo-200 dark:border-indigo-800/40">
       <table className="w-full min-w-[720px] border-collapse text-sm">
         <thead>
-          <tr className="border-b border-black/10 bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-400 dark:border-white/10 dark:bg-zinc-900">
+          <tr className="border-b border-indigo-200 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-400 dark:border-indigo-800/40 dark:bg-slate-900">
             <th className="px-4 py-2 font-medium">Commitment</th>
             <th className="px-4 py-2 font-medium">Promised value</th>
             <th className="px-4 py-2 font-medium">Criticality</th>
@@ -32,8 +32,8 @@ export function CommitmentReviewTable({ commitments }: { commitments: Commitment
             const current = overrides[c.id] ?? { criticality: c.criticality, toleranceBand: c.toleranceBand };
             return (
               <tr key={c.id} className="border-b border-black/5 last:border-0 dark:border-white/5">
-                <td className="px-4 py-3 font-medium text-black dark:text-zinc-50">{c.label}</td>
-                <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">{c.promisedValue}</td>
+                <td className="px-4 py-3 font-medium text-slate-900 dark:text-slate-50">{c.label}</td>
+                <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{c.promisedValue}</td>
                 <td className="px-4 py-3">
                   {/* Inert: local state only, never written to db/commitments.ts */}
                   <select
@@ -44,7 +44,7 @@ export function CommitmentReviewTable({ commitments }: { commitments: Commitment
                         [c.id]: { ...current, criticality: e.target.value as CommitmentCriticality },
                       }))
                     }
-                    className="rounded-md border border-black/10 bg-transparent px-2 py-1 text-xs dark:border-white/10"
+                    className="rounded-md border border-indigo-200 bg-transparent px-2 py-1 text-xs dark:border-indigo-800/40"
                   >
                     {CRITICALITIES.map((v) => (
                       <option key={v} value={v}>{v}</option>
@@ -61,7 +61,7 @@ export function CommitmentReviewTable({ commitments }: { commitments: Commitment
                         [c.id]: { ...current, toleranceBand: e.target.value as CommitmentToleranceBand },
                       }))
                     }
-                    className="rounded-md border border-black/10 bg-transparent px-2 py-1 text-xs dark:border-white/10"
+                    className="rounded-md border border-indigo-200 bg-transparent px-2 py-1 text-xs dark:border-indigo-800/40"
                   >
                     {TOLERANCES.map((v) => (
                       <option key={v} value={v}>{v}</option>

@@ -15,8 +15,8 @@ export interface GroupNodeData extends Record<string, unknown> {
  */
 export function GroupNode({ data }: NodeProps & { data: GroupNodeData }) {
   return (
-    <div className="h-full w-full cursor-grab rounded-xl border border-dashed border-black/20 bg-black/[0.025] dark:border-white/20 dark:bg-white/[0.03]">
-      <span className="absolute -top-[22px] left-1 select-none text-xs font-medium text-zinc-500">
+    <div className="h-full w-full cursor-grab rounded-xl border border-dashed border-black/20 bg-indigo-600/[0.025] dark:border-white/20 dark:bg-indigo-500/[0.03]">
+      <span className="absolute -top-[22px] left-1 select-none text-xs font-medium text-slate-500">
         {data.label}
       </span>
     </div>

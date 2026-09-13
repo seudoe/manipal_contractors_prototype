@@ -49,26 +49,33 @@ export function RoleShell({
 }) {
   const pathname = usePathname();
   const base = `/${role.toLowerCase()}`;
-  const inProject = pathname.includes(`${base}/project/`);
+  
+  // inProject is no longer used for width, but we can keep it if needed.
+  // The global sidebar is always w-16 normally, expanding to w-56 on hover.
 
   return (
-    <div className="flex flex-1">
+    <div className="flex flex-1 relative">
+      {/* Spacer to push main content to the right so it doesn't get covered by the collapsed sidebar */}
+      <div className="w-16 shrink-0" />
+
       <aside
-        className={`flex flex-col justify-between border-r border-black/10 bg-white py-6 dark:border-white/10 dark:bg-zinc-950 ${
-          inProject ? "w-16 items-center px-2" : "w-56 px-4"
-        }`}
+        className="group absolute bottom-0 left-0 top-0 z-50 flex w-16 flex-col justify-between overflow-hidden border-r border-indigo-900 bg-indigo-950 py-6 transition-[width] duration-300 hover:w-56"
       >
-        <div className="flex flex-col gap-6">
-          {!inProject && (
-            <div className="px-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+        <div className="flex w-56 flex-col gap-6 px-3">
+          <div className="flex items-center gap-3 px-1">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-900">
+              <UserCircle size={24} className="text-indigo-300" />
+            </div>
+            <div className="flex flex-col opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <p className="text-xs font-semibold uppercase tracking-wide text-indigo-400/80">
                 {role}
               </p>
-              <p className="truncate text-sm font-medium text-black dark:text-zinc-50">
+              <p className="truncate text-sm font-medium text-white">
                 {userName}
               </p>
             </div>
-          )}
+          </div>
+          
           <nav className="flex flex-col gap-1">
             {[...GLOBAL_NAV, ...(EXTRA_NAV[role] ?? [])].map((item) => {
               const href = `${base}/${item.segment}`;
@@ -79,34 +86,38 @@ export function RoleShell({
                   key={item.segment}
                   href={href}
                   title={item.label}
-                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    inProject ? "justify-center" : ""
-                  } ${
+                  className={`flex items-center gap-3 rounded-lg px-2.5 py-2.5 text-sm font-medium transition-colors ${
                     active
-                      ? "bg-black text-white dark:bg-white dark:text-black"
-                      : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                      ? "bg-indigo-600 text-white"
+                      : "text-indigo-200 hover:bg-indigo-900 hover:text-white"
                   }`}
                 >
-                  <Icon size={18} strokeWidth={2} />
-                  {!inProject && item.label}
+                  <Icon size={20} strokeWidth={2} className="shrink-0" />
+                  <span className="whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    {item.label}
+                  </span>
                 </Link>
               );
             })}
           </nav>
         </div>
-        <form action={logout}>
-          <button
-            type="submit"
-            title="Log out"
-            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 ${
-              inProject ? "justify-center" : ""
-            }`}
-          >
-            <LogOut size={18} strokeWidth={2} />
-            {!inProject && "Log out"}
-          </button>
-        </form>
+
+        <div className="flex w-56 flex-col px-3">
+          <form action={logout}>
+            <button
+              type="submit"
+              title="Log out"
+              className="flex w-full items-center gap-3 rounded-lg px-2.5 py-2.5 text-sm font-medium text-indigo-300 transition-colors hover:bg-indigo-900 hover:text-white"
+            >
+              <LogOut size={20} strokeWidth={2} className="shrink-0" />
+              <span className="whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                Log out
+              </span>
+            </button>
+          </form>
+        </div>
       </aside>
+      
       <main className="flex flex-1 flex-col p-8">{children}</main>
     </div>
   );

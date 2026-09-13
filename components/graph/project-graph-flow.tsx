@@ -120,7 +120,7 @@ export function ProjectGraphFlow({
   };
 
   return (
-    <div className="relative h-[70vh] w-full overflow-hidden rounded-xl border border-black/10 dark:border-white/10">
+    <div className="relative h-[70vh] w-full overflow-hidden rounded-xl border border-indigo-200 dark:border-indigo-800/40">
       <ReactFlow
         nodes={flowNodes}
         edges={flowEdges}
@@ -155,15 +155,15 @@ function NodeDetailPanel({
   const metadataEntries = Object.entries(node.metadata ?? {});
 
   return (
-    <div className="absolute right-3 top-3 z-10 flex w-72 flex-col gap-3 rounded-xl border border-black/10 bg-white p-4 shadow-lg dark:border-white/10 dark:bg-zinc-900">
+    <div className="absolute right-3 top-3 z-10 flex w-72 flex-col gap-3 rounded-xl border border-indigo-200 bg-white p-4 shadow-lg dark:border-indigo-800/40 dark:bg-slate-900">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="text-xs font-medium text-zinc-400">{node.type}</p>
-          <h3 className="font-semibold text-black dark:text-zinc-50">{node.name}</h3>
+          <p className="text-xs font-medium text-slate-400">{node.type}</p>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-50">{node.name}</h3>
         </div>
         <button
           onClick={onClose}
-          className="rounded p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          className="rounded p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-indigo-700"
           aria-label="Close"
         >
           <X size={16} />
@@ -171,14 +171,14 @@ function NodeDetailPanel({
       </div>
 
       {node.description && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-300">{node.description}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-300">{node.description}</p>
       )}
 
       <div className="flex items-center justify-between text-xs">
-        <span className="rounded-full bg-zinc-100 px-2 py-1 font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+        <span className="rounded-full bg-slate-100 px-2 py-1 font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
           {node.status.replaceAll("_", " ")}
         </span>
-        <span className="font-medium text-zinc-500">{node.progress}%</span>
+        <span className="font-medium text-slate-500">{node.progress}%</span>
       </div>
 
       {node.shouldCompleteBy && (
@@ -194,19 +194,19 @@ function NodeDetailPanel({
 
       {metadataEntries.length > 0 && (
         <div>
-          <p className="text-xs font-medium text-zinc-400">Metadata</p>
+          <p className="text-xs font-medium text-slate-400">Metadata</p>
           <dl className="mt-1 flex flex-col gap-1">
             {metadataEntries.map(([key, value]) => (
               <div key={key} className="flex justify-between gap-2 text-xs">
-                <dt className="text-zinc-500">{key}</dt>
-                <dd className="text-right text-zinc-700 dark:text-zinc-300">{String(value)}</dd>
+                <dt className="text-slate-500">{key}</dt>
+                <dd className="text-right text-slate-700 dark:text-slate-300">{String(value)}</dd>
               </div>
             ))}
           </dl>
         </div>
       )}
 
-      <div className="flex flex-col gap-1 border-t border-black/5 pt-2 text-xs text-zinc-400 dark:border-white/5">
+      <div className="flex flex-col gap-1 border-t border-black/5 pt-2 text-xs text-slate-400 dark:border-white/5">
         {node.creatorName && <span>Created by {node.creatorName}</span>}
         <span>Created {new Date(node.createdAt).toLocaleDateString()}</span>
         <span>Updated {new Date(node.updatedAt).toLocaleDateString()}</span>
@@ -219,8 +219,8 @@ function NodeDetailPanel({
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-2 text-xs">
-      <span className="text-zinc-500">{label}</span>
-      <span className="font-medium text-zinc-700 dark:text-zinc-300">{value}</span>
+      <span className="text-slate-500">{label}</span>
+      <span className="font-medium text-slate-700 dark:text-slate-300">{value}</span>
     </div>
   );
 }

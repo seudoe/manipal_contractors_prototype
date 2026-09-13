@@ -33,15 +33,15 @@ export function AuthForm() {
   );
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-black/10 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-zinc-900">
-      <div className="mb-6 flex rounded-full bg-zinc-100 p-1 dark:bg-zinc-800">
+    <div className="w-full max-w-sm rounded-2xl border border-indigo-200 bg-white p-8 shadow-sm dark:border-indigo-800/40 dark:bg-slate-900">
+      <div className="mb-6 flex rounded-full bg-slate-100 p-1 dark:bg-slate-800">
         <button
           type="button"
           onClick={() => setMode("login")}
           className={`flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
             mode === "login"
-              ? "bg-white text-black shadow-sm dark:bg-zinc-950 dark:text-white"
-              : "text-zinc-500"
+              ? "bg-white text-slate-900 shadow-sm dark:bg-slate-950 dark:text-white"
+              : "text-slate-500"
           }`}
         >
           Log in
@@ -51,8 +51,8 @@ export function AuthForm() {
           onClick={() => setMode("register")}
           className={`flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
             mode === "register"
-              ? "bg-white text-black shadow-sm dark:bg-zinc-950 dark:text-white"
-              : "text-zinc-500"
+              ? "bg-white text-slate-900 shadow-sm dark:bg-slate-950 dark:text-white"
+              : "text-slate-500"
           }`}
         >
           Register
@@ -74,18 +74,18 @@ export function AuthForm() {
           <Field label="Email" name="email" type="email" placeholder="you@example.com" icon={Mail} />
           <Field label="Password" name="password" type="password" placeholder="••••••••" icon={Lock} />
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
               Role
             </label>
             <div className="relative">
               <ShieldCheck
                 size={16}
-                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
               />
               <select
                 name="global_role"
                 defaultValue="STAKEHOLDER"
-                className="w-full rounded-lg border border-black/10 bg-transparent py-2 pl-9 pr-3 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/30"
+                className="w-full rounded-lg border border-indigo-200 bg-transparent py-2 pl-9 pr-3 text-sm outline-none focus:border-indigo-400 dark:border-indigo-800/50 dark:focus:border-indigo-500"
               >
                 {ROLES.map((r) => (
                   <option key={r.value} value={r.value}>
@@ -118,20 +118,20 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+      <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
         {label}
       </label>
       <div className="relative">
         <Icon
           size={16}
-          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
         />
         <input
           name={name}
           type={type}
           placeholder={placeholder}
           required
-          className="w-full rounded-lg border border-black/10 bg-transparent py-2 pl-9 pr-3 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/30"
+          className="w-full rounded-lg border border-indigo-200 bg-transparent py-2 pl-9 pr-3 text-sm outline-none focus:border-indigo-400 dark:border-indigo-800/50 dark:focus:border-indigo-500"
         />
       </div>
     </div>
@@ -147,7 +147,7 @@ function SubmitButton({ pending, label }: { pending: boolean; label: string }) {
     <button
       type="submit"
       disabled={pending}
-      className="mt-1 rounded-full bg-black px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-60 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+      className="mt-1 rounded-full bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-700 disabled:opacity-60 dark:bg-indigo-500 dark:text-white dark:hover:bg-indigo-400"
     >
       {pending ? "Please wait…" : label}
     </button>
@@ -158,8 +158,8 @@ function QuickLoginButtons() {
   const [pending, startTransition] = useTransition();
 
   return (
-    <div className="flex flex-col gap-2 border-t border-black/10 pt-4 dark:border-white/10">
-      <p className="text-center text-xs text-zinc-500">
+    <div className="flex flex-col gap-2 border-t border-indigo-200 pt-4 dark:border-indigo-800/40">
+      <p className="text-center text-xs text-slate-500">
         Or jump in as a demo user
       </p>
       <div className="flex gap-2">
@@ -175,7 +175,7 @@ function QuickLoginButtons() {
                   quickLogin(r.value as "STAKEHOLDER" | "CONTRACTOR" | "INSPECTOR");
                 })
               }
-              className="flex flex-1 flex-col items-center gap-1 rounded-lg border border-black/10 px-2 py-2 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:opacity-60 dark:border-white/15 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="flex flex-1 flex-col items-center gap-1 rounded-lg border border-indigo-200 px-2 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-60 dark:border-indigo-800/50 dark:text-slate-300 dark:hover:bg-indigo-700"
             >
               <Icon size={16} />
               {r.label}
@@ -189,7 +189,7 @@ function QuickLoginButtons() {
 
 function Hint() {
   return (
-    <p className="text-center text-xs text-zinc-500">
+    <p className="text-center text-xs text-slate-500">
       Demo accounts: ananya.rao@stakeholders.gov · vikram.shah@buildcorp.com ·
       meera.iyer@qualityinspect.gov — password &quot;password&quot;
     </p>

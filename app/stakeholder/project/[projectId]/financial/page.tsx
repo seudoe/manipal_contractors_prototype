@@ -15,7 +15,7 @@ export default async function Page({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-xl font-semibold text-black dark:text-zinc-50">Financial</h1>
+      <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Financial</h1>
       {financial ? (
         <FinancialView financial={financial} readOnly />
       ) : (

@@ -16,10 +16,10 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-xl font-semibold text-black dark:text-zinc-50">
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">
           Deviation Queue
         </h1>
-        <p className="text-sm text-zinc-500">Across every project, already sorted by priority.</p>
+        <p className="text-sm text-slate-500">Across every project, already sorted by priority.</p>
       </div>
       <DeviationQueueView rows={rows} />
     </div>

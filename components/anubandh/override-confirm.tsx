@@ -21,18 +21,18 @@ export function OverrideConfirm({ officerName }: { officerName: string }) {
           <p className="font-semibold">Override recorded</p>
         </div>
         <dl className="grid grid-cols-2 gap-2 text-sm">
-          <dt className="text-zinc-500">Officer</dt>
-          <dd className="text-right font-medium text-black dark:text-zinc-50">{officerName}</dd>
-          <dt className="text-zinc-500">Timestamp</dt>
-          <dd className="text-right font-medium text-black dark:text-zinc-50">{confirmed.at}</dd>
-          <dt className="text-zinc-500">Reason</dt>
-          <dd className="text-right font-medium text-black dark:text-zinc-50">{reason}</dd>
-          <dt className="text-zinc-500">Chain hash</dt>
-          <dd className="text-right font-mono text-xs text-zinc-600 dark:text-zinc-300">
+          <dt className="text-slate-500">Officer</dt>
+          <dd className="text-right font-medium text-slate-900 dark:text-slate-50">{officerName}</dd>
+          <dt className="text-slate-500">Timestamp</dt>
+          <dd className="text-right font-medium text-slate-900 dark:text-slate-50">{confirmed.at}</dd>
+          <dt className="text-slate-500">Reason</dt>
+          <dd className="text-right font-medium text-slate-900 dark:text-slate-50">{reason}</dd>
+          <dt className="text-slate-500">Chain hash</dt>
+          <dd className="text-right font-mono text-xs text-slate-600 dark:text-slate-300">
             {confirmed.hash}
           </dd>
         </dl>
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-slate-500">
           Demo only — this confirmation is not written to db/overrides.ts.
         </p>
       </div>
@@ -53,7 +53,7 @@ export function OverrideConfirm({ officerName }: { officerName: string }) {
         onChange={(e) => setReason(e.target.value)}
         placeholder="Reason for overriding this gate decision..."
         rows={3}
-        className="rounded-lg border border-black/10 bg-white p-3 text-sm dark:border-white/10 dark:bg-zinc-900"
+        className="rounded-lg border border-indigo-200 bg-white p-3 text-sm dark:border-indigo-800/40 dark:bg-slate-900"
       />
       <button
         disabled={!reason.trim()}

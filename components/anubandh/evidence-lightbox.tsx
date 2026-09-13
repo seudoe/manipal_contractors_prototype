@@ -22,20 +22,20 @@ export function EvidenceLightbox({ observation }: { observation: Observation }) 
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-indigo-600/60 p-4"
           onClick={() => setOpen(false)}
         >
           <div
-            className="flex w-full max-w-lg flex-col gap-3 rounded-xl bg-white p-4 dark:bg-zinc-900"
+            className="flex w-full max-w-lg flex-col gap-3 rounded-xl bg-white p-4 dark:bg-slate-900"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-2">
-              <p className="text-sm font-semibold text-black dark:text-zinc-50">
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                 {observation.sourceLabel}
               </p>
               <button
                 onClick={() => setOpen(false)}
-                className="rounded p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="rounded p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-indigo-700"
                 aria-label="Close"
               >
                 <X size={16} />
@@ -48,7 +48,7 @@ export function EvidenceLightbox({ observation }: { observation: Observation }) 
               caption={new Date(observation.observedAt).toLocaleString()}
             />
 
-            <p className="text-sm text-zinc-700 dark:text-zinc-300">{observation.observedValue}</p>
+            <p className="text-sm text-slate-700 dark:text-slate-300">{observation.observedValue}</p>
 
             <TrustNote
               sourceType={observation.sourceType}
@@ -56,7 +56,7 @@ export function EvidenceLightbox({ observation }: { observation: Observation }) 
               trustScore={observation.trustScore}
             />
 
-            <p className="font-mono text-[11px] text-zinc-400">{observation.hash}</p>
+            <p className="font-mono text-[11px] text-slate-400">{observation.hash}</p>
           </div>
         </div>
       )}

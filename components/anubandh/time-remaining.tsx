@@ -6,7 +6,7 @@
 function urgencyClassFor(timeRemaining: string): string {
   const t = timeRemaining.toLowerCase();
   if (t === "passed") {
-    return "bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500";
+    return "bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500";
   }
   if (t.includes("m") && !t.includes("d") && !t.includes("h")) {
     // pure minutes, e.g. "45m"
@@ -20,9 +20,9 @@ function urgencyClassFor(timeRemaining: string): string {
     return "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300";
   }
   if (t.includes("d")) {
-    return "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300";
+    return "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300";
   }
-  return "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300";
+  return "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300";
 }
 
 export function TimeRemaining({ value }: { value: string }) {

@@ -20,15 +20,15 @@ export interface EntityNodeData extends Record<string, unknown> {
 }
 
 const handleClass =
-  "!h-2 !w-2 !border !border-white !bg-zinc-400 dark:!border-zinc-900 dark:!bg-zinc-500";
+  "!h-2 !w-2 !border !border-white !bg-slate-400 dark:!border-slate-900 dark:!bg-slate-500";
 
 export function EntityNode({ data, selected }: NodeProps & { data: EntityNodeData }) {
   return (
     <div
-      className={`flex h-full w-full cursor-grab flex-col justify-center gap-0.5 rounded-lg border bg-white px-3 py-2 shadow-sm transition-shadow hover:shadow-md dark:bg-zinc-900 ${
+      className={`flex h-full w-full cursor-grab flex-col justify-center gap-0.5 rounded-lg border bg-white px-3 py-2 shadow-sm transition-shadow hover:shadow-md dark:bg-slate-900 ${
         selected || data.highlighted
           ? "border-black ring-2 ring-black/20 dark:border-white dark:ring-white/20"
-          : "border-black/15 dark:border-white/15"
+          : "border-black/15 dark:border-indigo-800/50"
       }`}
     >
       <Handle type="target" position={Position.Top} id="top-target" className={handleClass} />
@@ -40,10 +40,10 @@ export function EntityNode({ data, selected }: NodeProps & { data: EntityNodeDat
       <Handle type="target" position={Position.Right} id="right-target" className={handleClass} />
       <Handle type="source" position={Position.Right} id="right-source" className={handleClass} />
 
-      <span className="truncate text-sm font-medium text-black dark:text-zinc-50">{data.label}</span>
-      {data.gstin && <span className="truncate text-[10px] text-zinc-500">{data.gstin}</span>}
+      <span className="truncate text-sm font-medium text-slate-900 dark:text-slate-50">{data.label}</span>
+      {data.gstin && <span className="truncate text-[10px] text-slate-500">{data.gstin}</span>}
       {data.incorporationDate && (
-        <span className="truncate text-[10px] text-zinc-400">Inc. {data.incorporationDate}</span>
+        <span className="truncate text-[10px] text-slate-400">Inc. {data.incorporationDate}</span>
       )}
     </div>
   );

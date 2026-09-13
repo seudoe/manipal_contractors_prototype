@@ -30,15 +30,15 @@ export function CollusionBoard({
       />
 
       <div className="flex flex-col gap-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">Findings</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Findings</p>
         {findings.map((f) => (
           <button
             key={f.id}
             onClick={() => setHighlighted(f.id === highlighted ? null : f.id)}
             className={`flex flex-col items-start gap-1 rounded-xl border p-4 text-left transition-colors ${
               highlighted === f.id
-                ? "border-black bg-zinc-50 dark:border-white dark:bg-zinc-800"
-                : "border-black/10 bg-white hover:bg-zinc-50 dark:border-white/10 dark:bg-zinc-900 dark:hover:bg-zinc-800"
+                ? "border-black bg-slate-50 dark:border-white dark:bg-slate-800"
+                : "border-indigo-200 bg-white hover:bg-slate-50 dark:border-indigo-800/40 dark:bg-slate-900 dark:hover:bg-indigo-700"
             }`}
           >
             <div className="flex items-center gap-2">
@@ -51,11 +51,11 @@ export function CollusionBoard({
               >
                 {f.severity}
               </span>
-              <span className="text-xs font-medium text-zinc-500">
+              <span className="text-xs font-medium text-slate-500">
                 {f.motifType.replaceAll("_", " ")}
               </span>
             </div>
-            <p className="text-sm text-black dark:text-zinc-50">{f.explanation}</p>
+            <p className="text-sm text-slate-900 dark:text-slate-50">{f.explanation}</p>
           </button>
         ))}
       </div>

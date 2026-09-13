@@ -17,7 +17,7 @@ export function ProjectGraphView({ projectId }: { projectId: string }) {
 
   if (nodes.length === 0) {
     return (
-      <p className="rounded-xl border border-dashed border-black/10 p-8 text-center text-sm text-zinc-500 dark:border-white/15">
+      <p className="rounded-xl border border-dashed border-indigo-200 p-8 text-center text-sm text-slate-500 dark:border-indigo-800/50">
         No graph nodes yet.
       </p>
     );

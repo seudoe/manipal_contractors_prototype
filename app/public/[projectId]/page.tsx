@@ -24,8 +24,8 @@ export default async function Page({
   return (
     <div className="mx-auto flex min-h-screen max-w-2xl flex-col gap-6 p-8">
       <div>
-        <h1 className="text-2xl font-bold text-black dark:text-zinc-50">{project.name}</h1>
-        <p className="text-sm text-zinc-500">{owner?.user?.name ? `Commissioned by ${owner.user.name}` : project.domain}</p>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">{project.name}</h1>
+        <p className="text-sm text-slate-500">{owner?.user?.name ? `Commissioned by ${owner.user.name}` : project.domain}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -38,12 +38,12 @@ export default async function Page({
         />
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-zinc-500">
+      <div className="flex items-center gap-2 text-xs text-slate-500">
         <ShieldCheck size={14} />
         Last verified {new Date(summary.lastVerifiedDate || Date.now()).toLocaleDateString()}
       </div>
 
-      <p className="text-xs text-zinc-400">
+      <p className="text-xs text-slate-400">
         Party names and underlying evidence are not shown on this public page.
       </p>
 
@@ -54,9 +54,9 @@ export default async function Page({
 
 function Stat({ label, value, tone }: { label: string; value: string; tone?: string }) {
   return (
-    <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
-      <p className="text-xs text-zinc-500">{label}</p>
-      <p className={`mt-1 text-2xl font-bold ${tone ?? "text-black dark:text-zinc-50"}`}>{value}</p>
+    <div className="rounded-xl border border-indigo-200 bg-white p-4 dark:border-indigo-800/40 dark:bg-slate-900">
+      <p className="text-xs text-slate-500">{label}</p>
+      <p className={`mt-1 text-2xl font-bold ${tone ?? "text-slate-900 dark:text-slate-50"}`}>{value}</p>
     </div>
   );
 }

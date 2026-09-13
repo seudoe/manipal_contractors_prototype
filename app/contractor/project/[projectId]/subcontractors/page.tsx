@@ -35,7 +35,7 @@ export default async function Page({
 
   if (mySubcontractors.length === 0) {
     return (
-      <p className="rounded-xl border border-dashed border-black/10 p-8 text-center text-sm text-zinc-500 dark:border-white/15">
+      <p className="rounded-xl border border-dashed border-indigo-200 p-8 text-center text-sm text-slate-500 dark:border-indigo-800/50">
         You have no subcontractors on this project yet.
       </p>
     );
@@ -48,17 +48,17 @@ export default async function Page({
         return (
           <div
             key={sub.id}
-            className="flex flex-col gap-2 rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900"
+            className="flex flex-col gap-2 rounded-xl border border-indigo-200 bg-white p-4 dark:border-indigo-800/40 dark:bg-slate-900"
           >
             <div className="flex items-center gap-3">
-              <Building2 size={24} className="text-zinc-400" />
+              <Building2 size={24} className="text-slate-400" />
               <div>
-                <p className="text-sm font-medium text-black dark:text-zinc-50">{sub.name}</p>
-                <p className="text-xs text-zinc-500">{sub.description}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-50">{sub.name}</p>
+                <p className="text-xs text-slate-500">{sub.description}</p>
               </div>
             </div>
             {assignments.length > 0 && (
-              <ul className="ml-9 flex flex-col gap-1 text-xs text-zinc-500">
+              <ul className="ml-9 flex flex-col gap-1 text-xs text-slate-500">
                 {assignments.map((a) => (
                   <li key={a.id}>
                     {a.node?.name} — {a.node?.progress}% ({a.node?.status.replaceAll("_", " ")})

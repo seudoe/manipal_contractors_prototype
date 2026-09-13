@@ -8,8 +8,8 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold text-black dark:text-zinc-50">Collusion Graph</h1>
-        <p className="text-sm text-zinc-500">
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Collusion Graph</h1>
+        <p className="text-sm text-slate-500">
           Firms cluster by shared identity signals rather than by hierarchy.
         </p>
       </div>

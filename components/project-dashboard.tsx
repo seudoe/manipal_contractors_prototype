@@ -71,12 +71,12 @@ export function ProjectDashboard({ projectId }: { projectId: string }) {
       {cards.map(({ label, value, icon: Icon }) => (
         <div
           key={label}
-          className="flex items-start gap-3 rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900"
+          className="flex items-start gap-3 rounded-xl border border-indigo-200 bg-white p-4 dark:border-indigo-800/40 dark:bg-slate-900"
         >
-          <Icon size={20} className="mt-0.5 shrink-0 text-zinc-400" />
+          <Icon size={20} className="mt-0.5 shrink-0 text-slate-400" />
           <div>
-            <p className="text-xs font-medium text-zinc-500">{label}</p>
-            <p className="mt-0.5 font-semibold text-black dark:text-zinc-50">
+            <p className="text-xs font-medium text-slate-500">{label}</p>
+            <p className="mt-0.5 font-semibold text-slate-900 dark:text-slate-50">
               {value}
             </p>
           </div>
