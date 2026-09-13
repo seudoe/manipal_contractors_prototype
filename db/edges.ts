@@ -31,4 +31,13 @@ export const edges: GraphEdge[] = [
   { id: "edge-3-1", projectId: "project-3", sourceNodeId: "node-3-survey", targetNodeId: "node-3-pipeline", relationship: "DEPENDENCY", createdBy: "user-ct-1", createdAt: "2026-08-20T00:00:00.000Z" },
   // top-level feature -> project root
   { id: "edge-3-2", projectId: "project-3", sourceNodeId: "node-3-pipeline", targetNodeId: "node-3-root", relationship: "DEPENDENCY", createdBy: "user-ct-1", createdAt: "2026-08-20T00:00:00.000Z" },
+
+  // ---- ANUBANDH addition (TASK 9) — project-4 ----
+  { id: "edge-4-1", projectId: "project-4", sourceNodeId: "node-4-auth", targetNodeId: "node-4-payments", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
+  { id: "edge-4-2", projectId: "project-4", sourceNodeId: "node-4-auth", targetNodeId: "node-4-records", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
+  { id: "edge-4-3", projectId: "project-4", sourceNodeId: "node-4-sbom", targetNodeId: "node-4-deploy", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
+  // top-level features -> project root
+  { id: "edge-4-4", projectId: "project-4", sourceNodeId: "node-4-payments", targetNodeId: "node-4-root", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
+  { id: "edge-4-5", projectId: "project-4", sourceNodeId: "node-4-records", targetNodeId: "node-4-root", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
+  { id: "edge-4-6", projectId: "project-4", sourceNodeId: "node-4-deploy", targetNodeId: "node-4-root", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
 ];

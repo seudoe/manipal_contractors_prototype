@@ -60,4 +60,25 @@ export const projects: Project[] = [
     createdAt: "2026-08-20T00:00:00.000Z",
     updatedAt: "2026-08-20T00:00:00.000Z",
   },
+
+  // ---- ANUBANDH addition (TASK 9) — a software contract, so the same
+  // screens can be demoed for both a construction and a software domain.
+  {
+    id: "project-4",
+    name: "State Citizen Services Portal",
+    description:
+      "A citizen-facing e-governance portal covering identity, payments, and records access, with a phased production rollout.",
+    domain: "Software / e-Governance",
+    status: "IN_PROGRESS",
+    ownerStakeholderId: "user-st-1",
+    mainContractorId: "contractor-3",
+    baselineVersionId: "version-4-0",
+    contractValue: 92_000_000,
+    currency: "INR",
+    originalStartDate: "2025-11-01",
+    originalCompletionDate: "2026-11-30",
+    currentExpectedCompletionDate: "2026-11-30",
+    createdAt: "2025-10-15T00:00:00.000Z",
+    updatedAt: "2026-09-10T00:00:00.000Z",
+  },
 ];

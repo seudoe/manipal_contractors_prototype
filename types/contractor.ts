@@ -15,6 +15,14 @@ export interface Contractor {
   parentContractorId: string | null;
   createdAt: string;
   updatedAt: string;
+
+  // ---- ANUBANDH additions (all optional, display-only — see db/contractors.ts / TASK 8) ----
+  gstin?: string;
+  pan?: string;
+  registeredAddress?: string;
+  incorporationDate?: string;
+  directors?: string[];
+  bankIfsc?: string;
 }
 
 export type ProjectContractorRole = "MAIN_CONTRACTOR" | "SUBCONTRACTOR";

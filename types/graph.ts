@@ -38,6 +38,14 @@ export interface GraphNode {
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+
+  // ---- ANUBANDH additions (all optional, display-only — see db/nodes.ts) ----
+  criticality?: "COSMETIC" | "FINANCIAL" | "IDENTITY" | "STRUCTURAL" | "SAFETY";
+  toleranceBand?: "NONE" | "TIGHT" | "LOOSE" | "COSMETIC";
+  irreversibleEvent?: string;
+  /** display string, e.g. "Pour at 12:00 today" */
+  irreversibleLabel?: string;
+  valueAtRisk?: number;
 }
 
 export type GraphEdgeRelationship = "DEPENDENCY";

@@ -17,4 +17,10 @@ export const featureAssignments: FeatureAssignment[] = [
   // project-3 — new project, BuildCorp responsible for everything so far
   { id: "fa-10", projectId: "project-3", nodeId: "node-3-survey", contractorId: "contractor-1", assignmentType: "RESPONSIBLE", createdAt: "2026-08-20T00:00:00.000Z" },
   { id: "fa-11", projectId: "project-3", nodeId: "node-3-pipeline", contractorId: "contractor-1", assignmentType: "RESPONSIBLE", createdAt: "2026-08-20T00:00:00.000Z" },
+
+  // project-4 — SkyRise Builders responsible for the whole software build
+  { id: "fa-12", projectId: "project-4", nodeId: "node-4-auth", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-10-16T00:00:00.000Z" },
+  { id: "fa-13", projectId: "project-4", nodeId: "node-4-payments", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-10-16T00:00:00.000Z" },
+  { id: "fa-14", projectId: "project-4", nodeId: "node-4-records", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-10-16T00:00:00.000Z" },
+  { id: "fa-15", projectId: "project-4", nodeId: "node-4-deploy", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-10-16T00:00:00.000Z" },
 ];

@@ -10,6 +10,9 @@ const TABS: ProjectTab[] = [
   { label: "Project Graph", segment: "project-graph", icon: "Network" },
   { label: "Contractor Details", segment: "contractor-details", icon: "Building2" },
   { label: "Changes", segment: "changes", icon: "History" },
+  // ANUBANDH additions (plan.md/update (1).md TASK 6, 10) — stakeholder-only views
+  { label: "Financial", segment: "financial", icon: "Wallet" },
+  { label: "Commitments", segment: "commitments", icon: "FileCheck2" },
   { label: "Notifications", segment: "notifications", icon: "Bell" },
   { label: "Settings", segment: "settings", icon: "Settings" },
 ];

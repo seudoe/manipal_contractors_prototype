@@ -11,6 +11,11 @@ import {
   History,
   Bell,
   Settings,
+  AlertTriangle,
+  Wallet,
+  FileCheck2,
+  Activity,
+  Image,
   type LucideIcon,
 } from "lucide-react";
 
@@ -23,6 +28,12 @@ const ICONS = {
   History,
   Bell,
   Settings,
+  // ANUBANDH additions (plan.md/update (1).md) — new keys only, existing keys untouched
+  AlertTriangle,
+  Wallet,
+  FileCheck2,
+  Activity,
+  Image,
 } satisfies Record<string, LucideIcon>;
 
 export type ProjectTabIcon = keyof typeof ICONS;

@@ -6,6 +6,13 @@ import { getProjectById } from "@/db/queries";
 const TABS: ProjectTab[] = [
   { label: "Changes", segment: "changes", icon: "History" },
   { label: "Graph", segment: "graph", icon: "Network" },
+  // ANUBANDH additions (plan.md/update (1).md TASK 4/6/7) — inspector-only tabs
+  { label: "Deviations", segment: "deviations", icon: "AlertTriangle" },
+  { label: "Expectations", segment: "expectations", icon: "FileCheck2" },
+  { label: "Financial", segment: "financial", icon: "Wallet" },
+  // ANUBANDH additions (timeline + evidence viewer)
+  { label: "Timeline", segment: "timeline", icon: "Activity" },
+  { label: "Evidence", segment: "evidence", icon: "Image" },
 ];
 
 export default async function InspectorProjectLayout({

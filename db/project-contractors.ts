@@ -14,4 +14,7 @@ export const projectContractors: ProjectContractor[] = [
 
   // project-3 is brand new — only the main contractor is on board so far, no subcontractor yet
   { id: "pc-5", projectId: "project-3", contractorId: "contractor-1", role: "MAIN_CONTRACTOR", createdAt: "2026-08-20T00:00:00.000Z" },
+
+  // ANUBANDH addition (TASK 9)
+  { id: "pc-6", projectId: "project-4", contractorId: "contractor-3", role: "MAIN_CONTRACTOR", createdAt: "2025-10-15T00:00:00.000Z" },
 ];

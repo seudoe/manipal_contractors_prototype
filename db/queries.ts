@@ -20,6 +20,25 @@ import { featureAssignments } from "./feature-assignments";
 import { versions } from "./versions";
 import { changes, changeReviews, changeRiskScores } from "./changes";
 
+// ---- ANUBANDH prototype additions (plan.md/update (1).md) ----
+import type { Commitment, CommitmentCredential } from "@/types/commitment";
+import type { Observation, Expectation } from "@/types/observation";
+import type { Deviation, GateEvent, Override } from "@/types/deviation";
+import type { ScanScenario } from "@/types/verification";
+import { commitments } from "./commitments";
+import { credentials } from "./credentials";
+import { observations } from "./observations";
+import { expectations } from "./expectations";
+import { deviations } from "./deviations";
+import { gateEvents } from "./gate-events";
+import { overrides } from "./overrides";
+import { financials, type ProjectFinancial } from "./financial";
+import { scanScenarios } from "./scan-scenarios";
+import type { CollusionFinding, CollusionGraphNode, CollusionGraphEdge } from "@/types/collusion";
+import { findings, collusionNodes, collusionEdges } from "./collusion";
+import { impliedEvidenceRecords, type ImpliedEvidence } from "./implied-evidence";
+import type { TimelineEntry } from "@/types/timeline";
+
 /**
  * Data-access layer for the demo dataset. Every exported function here is
  * the seam to swap out later for real Supabase/Prisma queries — pages and
@@ -333,4 +352,194 @@ export function getChangeDetail(changeId: string): ChangeDetail | undefined {
     reviews: getChangeReviews(changeId),
     riskScore: getChangeRiskScore(changeId),
   };
+}
+
+// ---------------------------------------------------------------------------
+// ANUBANDH prototype additions (plan.md/update (1).md) — plain array lookups
+// and filters only, no computation. Every value returned here was
+// hand-authored in the corresponding db/*.ts file.
+// ---------------------------------------------------------------------------
+
+export function getCommitmentsForProject(projectId: string): Commitment[] {
+  return commitments.filter((c) => c.projectId === projectId);
+}
+
+export function getCommitmentById(commitmentId: string): Commitment | undefined {
+  return commitments.find((c) => c.id === commitmentId);
+}
+
+export function getCredentialsForProject(projectId: string): CommitmentCredential[] {
+  const commitmentIds = new Set(getCommitmentsForProject(projectId).map((c) => c.id));
+  return credentials.filter((cred) => commitmentIds.has(cred.commitmentId));
+}
+
+export function getCredentialsForCommitment(commitmentId: string): CommitmentCredential[] {
+  return credentials.filter((cred) => cred.commitmentId === commitmentId);
+}
+
+export function getObservationsForProject(projectId: string): Observation[] {
+  return observations.filter((o) => o.projectId === projectId);
+}
+
+export function getObservationById(observationId: string): Observation | undefined {
+  return observations.find((o) => o.id === observationId);
+}
+
+export function getPhotoObservationsForProject(projectId: string): Observation[] {
+  return getObservationsForProject(projectId).filter((o) => o.sourceType === "SITE_PHOTO");
+}
+
+export function getExpectationsForProject(projectId: string): Expectation[] {
+  const commitmentIds = new Set(getCommitmentsForProject(projectId).map((c) => c.id));
+  return expectations.filter((e) => commitmentIds.has(e.commitmentId));
+}
+
+export function getExpectationById(expectationId: string): Expectation | undefined {
+  return expectations.find((e) => e.id === expectationId);
+}
+
+export function getMissingExpectations(projectId: string): Expectation[] {
+  return getExpectationsForProject(projectId).filter((e) => e.status === "MISSING");
+}
+
+export function getDeviationsForProject(projectId: string): Deviation[] {
+  return deviations.filter((d) => d.projectId === projectId);
+}
+
+/** All deviations across all projects, already sorted by the hardcoded priority (descending). */
+export function getDeviationQueue(): Deviation[] {
+  return [...deviations].sort((a, b) => b.priority - a.priority);
+}
+
+export function getDeviationById(deviationId: string): Deviation | undefined {
+  return deviations.find((d) => d.id === deviationId);
+}
+
+export function getGateEventsForProject(projectId: string): GateEvent[] {
+  return gateEvents.filter((g) => g.projectId === projectId);
+}
+
+export function getGateEventById(gateEventId: string): GateEvent | undefined {
+  return gateEvents.find((g) => g.id === gateEventId);
+}
+
+export function getOverrideById(overrideId: string): Override | undefined {
+  return overrides.find((o) => o.id === overrideId);
+}
+
+export function getOverridesForProject(projectId: string): Override[] {
+  const gateEventIds = new Set(getGateEventsForProject(projectId).map((g) => g.id));
+  return overrides.filter((o) => gateEventIds.has(o.gateEventId));
+}
+
+/** All overrides across all projects — used by the override-audit screen. */
+export function getAllOverrides(): Override[] {
+  return overrides;
+}
+
+export function getFinancialForProject(projectId: string): ProjectFinancial | undefined {
+  return financials.find((f) => f.projectId === projectId);
+}
+
+export function getScanScenarios(): ScanScenario[] {
+  return scanScenarios;
+}
+
+export function getScanScenarioById(scenarioId: string): ScanScenario | undefined {
+  return scanScenarios.find((s) => s.id === scenarioId);
+}
+
+export function getCollusionFindings(): CollusionFinding[] {
+  return findings;
+}
+
+export interface CollusionGraph {
+  nodes: CollusionGraphNode[];
+  edges: CollusionGraphEdge[];
+}
+
+export function getCollusionGraph(): CollusionGraph {
+  return { nodes: collusionNodes, edges: collusionEdges };
+}
+
+export function getImpliedEvidenceForProject(projectId: string): ImpliedEvidence | undefined {
+  return impliedEvidenceRecords.find((i) => i.projectId === projectId);
+}
+
+export interface PublicProjectSummary {
+  committedCount: number;
+  verifiedCount: number;
+  openCriticalCount: number;
+  lastVerifiedDate: string;
+}
+
+/**
+ * Aggregate counts only — no party names, no evidence, no case details.
+ * Used by the unauthenticated public citizen view (app/public/[projectId]).
+ */
+export function getPublicProjectSummary(projectId: string): PublicProjectSummary {
+  const project = getProjectById(projectId);
+  const committedCount = getCommitmentsForProject(projectId).length;
+  const verifiedCount = getExpectationsForProject(projectId).filter((e) => e.status === "MET").length;
+  const openCriticalCount = getDeviationsForProject(projectId).filter(
+    (d) => (d.level === "L3" || d.level === "L4") && d.status !== "CLOSED"
+  ).length;
+  const observedDates = getObservationsForProject(projectId).map((o) => o.observedAt);
+  const lastVerifiedDate =
+    observedDates.length > 0
+      ? observedDates.reduce((latest, d) => (d > latest ? d : latest))
+      : project?.updatedAt ?? "";
+
+  return { committedCount, verifiedCount, openCriticalCount, lastVerifiedDate };
+}
+
+/**
+ * Merges observations, deviations, gate events and overrides for a project
+ * into one feed, sorted by each record's own existing timestamp — the same
+ * kind of plain sort getProjectChanges already does by createdAt. Nothing
+ * here is scored, derived, or authored on the fly.
+ */
+export function getProjectTimeline(projectId: string): TimelineEntry[] {
+  const observationEntries: TimelineEntry[] = getObservationsForProject(projectId).map((o) => ({
+    id: `obs-entry-${o.id}`,
+    type: "OBSERVATION",
+    at: o.observedAt,
+    title: o.sourceLabel,
+    description: o.observedValue,
+    isPhoto: o.sourceType === "SITE_PHOTO",
+    trustLabel: o.trustLabel,
+    trustScore: o.trustScore,
+  }));
+
+  const deviationEntries: TimelineEntry[] = getDeviationsForProject(projectId).map((d) => ({
+    id: `dev-entry-${d.id}`,
+    type: "DEVIATION",
+    at: d.raisedAt,
+    title: d.title,
+    description: d.reasons[0] ?? "",
+    level: d.level,
+    href: `/inspector/project/${projectId}/deviations/${d.id}`,
+  }));
+
+  const gateEventEntries: TimelineEntry[] = getGateEventsForProject(projectId).map((g) => ({
+    id: `ge-entry-${g.id}`,
+    type: "GATE_EVENT",
+    at: g.at,
+    title: g.checkpointLabel,
+    description: g.reasons[0] ?? "",
+    level: g.level,
+    decision: g.decision,
+  }));
+
+  const overrideEntries: TimelineEntry[] = getOverridesForProject(projectId).map((o) => ({
+    id: `ovr-entry-${o.id}`,
+    type: "OVERRIDE",
+    at: o.at,
+    title: `Override by ${o.officerName}`,
+    description: o.reason,
+  }));
+
+  return [...observationEntries, ...deviationEntries, ...gateEventEntries, ...overrideEntries].sort(
+    (a, b) => b.at.localeCompare(a.at)
+  );
 }

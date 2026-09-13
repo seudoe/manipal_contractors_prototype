@@ -2,7 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FolderKanban, UserCircle, Settings, Bell, LogOut } from "lucide-react";
+import {
+  FolderKanban,
+  UserCircle,
+  Settings,
+  Bell,
+  LogOut,
+  AlertTriangle,
+  Share2,
+  FileWarning,
+  type LucideIcon,
+} from "lucide-react";
 import { logout } from "@/app/actions";
 import type { GlobalRole } from "@/types/user";
 
@@ -12,6 +22,21 @@ const GLOBAL_NAV = [
   { label: "Settings", segment: "settings", icon: Settings },
   { label: "Notifications", segment: "notifications", icon: Bell },
 ];
+
+/**
+ * ANUBANDH addition (plan.md/update (1).md TASK 4/5/8) — extra top-level
+ * nav entries, scoped per role so GLOBAL_NAV's existing behaviour for
+ * CONTRACTOR/STAKEHOLDER is untouched (they get an empty array here).
+ */
+const EXTRA_NAV: Partial<
+  Record<GlobalRole, { label: string; segment: string; icon: LucideIcon }[]>
+> = {
+  INSPECTOR: [
+    { label: "Deviations", segment: "deviations", icon: AlertTriangle },
+    { label: "Override Audit", segment: "override-audit", icon: FileWarning },
+    { label: "Collusion", segment: "collusion", icon: Share2 },
+  ],
+};
 
 export function RoleShell({
   role,
@@ -45,7 +70,7 @@ export function RoleShell({
             </div>
           )}
           <nav className="flex flex-col gap-1">
-            {GLOBAL_NAV.map((item) => {
+            {[...GLOBAL_NAV, ...(EXTRA_NAV[role] ?? [])].map((item) => {
               const href = `${base}/${item.segment}`;
               const active = pathname === href;
               const Icon = item.icon;
