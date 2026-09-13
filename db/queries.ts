@@ -38,6 +38,9 @@ import type { CollusionFinding, CollusionGraphNode, CollusionGraphEdge } from "@
 import { findings, collusionNodes, collusionEdges } from "./collusion";
 import { impliedEvidenceRecords, type ImpliedEvidence } from "./implied-evidence";
 import type { TimelineEntry } from "@/types/timeline";
+import type { BillScanScenario, BillRecord } from "@/types/bill";
+import { billScanScenarios } from "./bill-scans";
+import { bills } from "./bills";
 
 /**
  * Data-access layer for the demo dataset. Every exported function here is
@@ -542,4 +545,24 @@ export function getProjectTimeline(projectId: string): TimelineEntry[] {
   return [...observationEntries, ...deviationEntries, ...gateEventEntries, ...overrideEntries].sort(
     (a, b) => b.at.localeCompare(a.at)
   );
+}
+
+// ---------------------------------------------------------------------------
+// Bill verification & invoice history (additive queries)
+// ---------------------------------------------------------------------------
+
+export function getBillScanScenarios(): BillScanScenario[] {
+  return billScanScenarios;
+}
+
+export function getBillScanScenarioById(id: string): BillScanScenario | undefined {
+  return billScanScenarios.find((s) => s.id === id);
+}
+
+export function getBillsForContract(projectId: string): BillRecord[] {
+  return bills.filter((b) => b.projectId === projectId);
+}
+
+export function getBillById(id: string): BillRecord | undefined {
+  return bills.find((b) => b.id === id);
 }

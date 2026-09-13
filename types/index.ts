@@ -26,3 +26,4 @@ export * from "./deviation";
 export * from "./verification";
 export * from "./collusion";
 export * from "./timeline";
+export * from "./bill";

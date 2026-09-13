@@ -16,6 +16,8 @@ import {
   FileCheck2,
   Activity,
   Image,
+  ScanLine,
+  ReceiptText,
   type LucideIcon,
 } from "lucide-react";
 
@@ -34,6 +36,8 @@ const ICONS = {
   FileCheck2,
   Activity,
   Image,
+  ScanLine,
+  ReceiptText,
 } satisfies Record<string, LucideIcon>;
 
 export type ProjectTabIcon = keyof typeof ICONS;

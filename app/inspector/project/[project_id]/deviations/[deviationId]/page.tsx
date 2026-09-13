@@ -7,7 +7,8 @@ import { TrustNote } from "@/components/anubandh/trust-note";
 import { PriorityPanel } from "@/components/anubandh/priority-panel";
 import { RequestEvidenceButton } from "@/components/anubandh/request-evidence-button";
 import { EvidenceLightbox } from "@/components/anubandh/evidence-lightbox";
-import { getDeviationById, getObservationById, getExpectationById } from "@/db/queries";
+import { ExternalLink } from "lucide-react";
+import { getDeviationById, getObservationById, getExpectationById, getBillsForContract } from "@/db/queries";
 
 export default async function Page({
   params,
@@ -25,6 +26,8 @@ export default async function Page({
   const contributing = deviation.contributingDeviationIds
     .map((id) => getDeviationById(id))
     .filter((d): d is NonNullable<typeof d> => Boolean(d));
+
+  const linkedBill = getBillsForContract(project_id).find((b) => b.linkedIssueId === deviationId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -52,6 +55,29 @@ export default async function Page({
         observedText={deviation.observedText}
         silence={isSilence}
       />
+
+      {linkedBill && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-black/10 bg-zinc-50/70 p-4 dark:border-white/10 dark:bg-zinc-900/40">
+          <div className="flex flex-col gap-0.5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+              Originating tax invoice
+            </p>
+            <p className="text-sm font-medium text-black dark:text-zinc-50">
+              Invoice <span className="font-mono">{linkedBill.invoiceNumber}</span> ({linkedBill.supplierName})
+            </p>
+            <p className="text-xs text-zinc-500">
+              Delivered on {linkedBill.invoiceDate} • Rs {linkedBill.totalValue.toLocaleString("en-IN")}
+            </p>
+          </div>
+          <Link
+            href={`/inspector/project/${project_id}/bills`}
+            className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-black/10 bg-white px-3 py-1.5 text-xs font-medium text-black hover:bg-zinc-100 dark:border-white/10 dark:bg-zinc-950 dark:text-zinc-50 dark:hover:bg-zinc-900"
+          >
+            View in invoice history
+            <ExternalLink size={12} />
+          </Link>
+        </div>
+      )}
 
       {isSilence ? (
         <div className="rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-900/50">

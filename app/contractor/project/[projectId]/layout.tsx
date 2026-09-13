@@ -11,6 +11,8 @@ const TABS: ProjectTab[] = [
   { label: "Stakeholder Details", segment: "stakeholder-details", icon: "Users" },
   { label: "Subcontractors", segment: "subcontractors", icon: "Building2" },
   { label: "Changes", segment: "changes", icon: "History" },
+  { label: "Bill Scan", segment: "bill-scan", icon: "ScanLine" },
+  { label: "Invoices", segment: "bills", icon: "ReceiptText" },
   { label: "Notifications", segment: "notifications", icon: "Bell" },
   { label: "Settings", segment: "settings", icon: "Settings" },
 ];

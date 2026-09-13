@@ -13,6 +13,8 @@ const TABS: ProjectTab[] = [
   // ANUBANDH additions (plan.md/update (1).md TASK 6, 10) — stakeholder-only views
   { label: "Financial", segment: "financial", icon: "Wallet" },
   { label: "Commitments", segment: "commitments", icon: "FileCheck2" },
+  { label: "Bill Scan", segment: "bill-scan", icon: "ScanLine" },
+  { label: "Invoices", segment: "bills", icon: "ReceiptText" },
   { label: "Notifications", segment: "notifications", icon: "Bell" },
   { label: "Settings", segment: "settings", icon: "Settings" },
 ];

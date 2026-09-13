@@ -13,6 +13,8 @@ const TABS: ProjectTab[] = [
   // ANUBANDH additions (timeline + evidence viewer)
   { label: "Timeline", segment: "timeline", icon: "Activity" },
   { label: "Evidence", segment: "evidence", icon: "Image" },
+  { label: "Bill Scan", segment: "bill-scan", icon: "ScanLine" },
+  { label: "Invoices", segment: "bills", icon: "ReceiptText" },
 ];
 
 export default async function InspectorProjectLayout({
