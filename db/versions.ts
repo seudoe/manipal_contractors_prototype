@@ -13,4 +13,6 @@ export const versions: ProjectVersion[] = [
   { id: "version-2-1", projectId: "project-2", versionNumber: 1, parentVersionId: "version-2-0", createdBy: "user-ct-3", createdAt: "2025-11-02T00:00:00.000Z", message: "Medical equipment budget revised; plumbing works started" },
 
   { id: "version-3-0", projectId: "project-3", versionNumber: 0, parentVersionId: null, createdBy: "user-st-3", createdAt: "2026-08-20T00:00:00.000Z", message: "Baseline" },
+
+  { id: "version-5-0", projectId: "project-5", versionNumber: 0, parentVersionId: null, createdBy: "user-ct-2", createdAt: "2025-03-20T00:00:00.000Z", message: "Baseline" },
 ];

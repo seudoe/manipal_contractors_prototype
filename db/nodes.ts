@@ -270,4 +270,44 @@ export const nodes: GraphNode[] = [
     createdAt: "2025-10-16T00:00:00.000Z",
     updatedAt: "2026-09-10T00:00:00.000Z",
   },
+
+  // ---- project-5: Electrical & Signaling System (ElectroWorks' own
+  // standalone project — see db/projects.ts for why this has no relational
+  // link to project-1 despite mirroring its electrical feature) ----
+  {
+    id: "node-5-root",
+    projectId: "project-5",
+    type: "PROJECT",
+    name: "Electrical & Signaling System",
+    status: "IN_PROGRESS",
+    progress: 30,
+    metadata: { technology: "SCADA" },
+    createdBy: "user-ct-2",
+    createdAt: "2025-03-20T00:00:00.000Z",
+    updatedAt: "2025-09-10T00:00:00.000Z",
+  },
+  {
+    id: "node-5-wiring",
+    projectId: "project-5",
+    type: "FEATURE",
+    name: "Traction Power Wiring",
+    status: "COMPLETED",
+    progress: 100,
+    metadata: {},
+    createdBy: "user-ct-2",
+    createdAt: "2025-03-20T00:00:00.000Z",
+    updatedAt: "2025-09-10T00:00:00.000Z",
+  },
+  {
+    id: "node-5-scada",
+    projectId: "project-5",
+    type: "FEATURE",
+    name: "SCADA Signaling Integration",
+    status: "IN_PROGRESS",
+    progress: 20,
+    metadata: { technology: "SCADA" },
+    createdBy: "user-ct-2",
+    createdAt: "2025-03-20T00:00:00.000Z",
+    updatedAt: "2025-09-10T00:00:00.000Z",
+  },
 ];

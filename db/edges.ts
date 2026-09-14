@@ -40,4 +40,8 @@ export const edges: GraphEdge[] = [
   { id: "edge-4-4", projectId: "project-4", sourceNodeId: "node-4-payments", targetNodeId: "node-4-root", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
   { id: "edge-4-5", projectId: "project-4", sourceNodeId: "node-4-records", targetNodeId: "node-4-root", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
   { id: "edge-4-6", projectId: "project-4", sourceNodeId: "node-4-deploy", targetNodeId: "node-4-root", relationship: "DEPENDENCY", createdBy: "user-ct-3", createdAt: "2025-10-16T00:00:00.000Z" },
+
+  // project-5 — Electrical & Signaling System (ElectroWorks' standalone project)
+  { id: "edge-5-1", projectId: "project-5", sourceNodeId: "node-5-wiring", targetNodeId: "node-5-root", relationship: "DEPENDENCY", createdBy: "user-ct-2", createdAt: "2025-03-20T00:00:00.000Z" },
+  { id: "edge-5-2", projectId: "project-5", sourceNodeId: "node-5-scada", targetNodeId: "node-5-root", relationship: "DEPENDENCY", createdBy: "user-ct-2", createdAt: "2025-03-20T00:00:00.000Z" },
 ];

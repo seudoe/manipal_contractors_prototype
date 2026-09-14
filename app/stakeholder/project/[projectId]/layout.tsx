@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { ProjectSidebar, type ProjectTab } from "@/components/project-sidebar";
 import { ProjectHeader } from "@/components/project-header";
 import { getSessionUser } from "@/lib/session";
-import { getProjectById, getProjectsForUser } from "@/db/queries";
+import { getProjectById, getProjectsForUser, getAssignableContractors } from "@/db/queries";
 
 const TABS: ProjectTab[] = [
   { label: "Dashboard", segment: "dashboard", icon: "LayoutDashboard" },
@@ -42,7 +42,12 @@ export default async function StakeholderProjectLayout({
     <div className="flex flex-1 -m-8">
       <ProjectSidebar basePath={basePath} tabs={TABS} />
       <div className="flex flex-1 flex-col p-8">
-        <ProjectHeader project={project} />
+        <ProjectHeader
+          project={project}
+          assignableContractors={
+            project.mainContractorId ? undefined : getAssignableContractors()
+          }
+        />
         {children}
       </div>
     </div>

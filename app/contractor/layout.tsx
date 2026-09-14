@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
+import { getContractorByUserId } from "@/db/queries";
 import { RoleShell } from "@/components/role-shell";
 
 export default async function ContractorLayout({
@@ -12,8 +13,10 @@ export default async function ContractorLayout({
     redirect("/");
   }
 
+  const contractor = getContractorByUserId(user.id);
+
   return (
-    <RoleShell role="CONTRACTOR" userName={user.name}>
+    <RoleShell role="CONTRACTOR" userName={user.name} orgName={contractor?.name}>
       {children}
     </RoleShell>
   );

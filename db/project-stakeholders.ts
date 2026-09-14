@@ -18,4 +18,9 @@ export const projectStakeholders: ProjectStakeholder[] = [
   // ANUBANDH addition (TASK 9) — rotation continues: project-4 gets user-st-1 (OWNER), user-st-2 (EDITOR)
   { id: "ps-7", projectId: "project-4", userId: "user-st-1", role: "OWNER", createdAt: "2025-10-15T00:00:00.000Z" },
   { id: "ps-8", projectId: "project-4", userId: "user-st-2", role: "EDITOR", createdAt: "2025-10-15T00:00:00.000Z" },
+
+  // project-5 (ElectroWorks' standalone "Electrical & Signaling System" —
+  // see db/projects.ts) keeps the same owner as project-1 for narrative
+  // continuity, not because the two records are actually linked.
+  { id: "ps-9", projectId: "project-5", userId: "user-st-1", role: "OWNER", createdAt: "2025-03-20T00:00:00.000Z" },
 ];

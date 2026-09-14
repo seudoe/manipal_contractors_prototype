@@ -1,9 +1,16 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import type { GlobalRole } from "@/types/user";
-import { findUserByEmail, createUser, getUsers } from "@/db/queries";
-import { setSessionUser, clearSessionUser, roleHomePath } from "@/lib/session";
+import {
+  findUserByEmail,
+  createUser,
+  getUsers,
+  getProjectsForUser,
+  assignMainContractor,
+} from "@/db/queries";
+import { getSessionUser, setSessionUser, clearSessionUser, roleHomePath } from "@/lib/session";
 
 export interface AuthFormState {
   error?: string;
@@ -56,6 +63,23 @@ export async function quickLogin(role: GlobalRole) {
 
   await setSessionUser(user.id);
   redirect(roleHomePath(user.globalRole));
+}
+
+/**
+ * Stakeholder-only, one-time award of a project's main contractor — see
+ * db/queries.ts#assignMainContractor for the "why is this allowed when the
+ * spec says mainContractorId can't be edited" reasoning (this is the
+ * initial award, not a post-award edit; it's a no-op once already set).
+ */
+export async function assignContractor(projectId: string, contractorId: string) {
+  const user = await getSessionUser();
+  if (!user) return;
+
+  const allowed = getProjectsForUser(user.id).some((p) => p.id === projectId);
+  if (!allowed) return;
+
+  assignMainContractor(projectId, contractorId, user.id);
+  revalidatePath(`/stakeholder/project/${projectId}`, "layout");
 }
 
 export async function logout() {

@@ -50,7 +50,10 @@ export const projects: Project[] = [
     domain: "Utilities Infrastructure",
     status: "NOT_STARTED",
     ownerStakeholderId: "user-st-3",
-    mainContractorId: "contractor-1",
+    // Not awarded yet — this is the one demo project that's still
+    // pre-award, so the stakeholder's "Assign to Contractor" button has
+    // something to act on. See db/queries.ts#assignMainContractor.
+    mainContractorId: null,
     baselineVersionId: "version-3-0",
     contractValue: 180_000_000,
     currency: "INR",
@@ -80,5 +83,35 @@ export const projects: Project[] = [
     currentExpectedCompletionDate: "2026-11-30",
     createdAt: "2025-10-15T00:00:00.000Z",
     updatedAt: "2026-09-10T00:00:00.000Z",
+  },
+
+  // ---- Demo addition — ElectroWorks' "own" project, hardcoded to LOOK like
+  // the Electrical & Signaling System work on project-1 (Riverside Metro
+  // Extension) has been spun out as its own project for the subcontractor.
+  // There is deliberately NO relational link at the graph/data level (no
+  // shared node/edge ids, no cross-referencing) — it's the same
+  // name/structure only. `partOfProjectId` is the one intentional exception:
+  // a display-only pointer (see types/project.ts) so ElectroWorks' project
+  // list shows this instead of project-1 (getProjectsForUser hides the
+  // parent once its spin-off is in the same contractor's list), and its
+  // header can say "part of Riverside Metro Extension".
+  {
+    id: "project-5",
+    name: "Electrical & Signaling System",
+    description:
+      "Electrical and signaling systems package for the Riverside Metro Extension corridor, including traction power wiring and SCADA-based signaling integration.",
+    domain: "Transit Infrastructure",
+    status: "IN_PROGRESS",
+    ownerStakeholderId: "user-st-1",
+    mainContractorId: "contractor-2",
+    baselineVersionId: "version-5-0",
+    partOfProjectId: "project-1",
+    contractValue: 45_000_000,
+    currency: "INR",
+    originalStartDate: "2025-03-20",
+    originalCompletionDate: "2026-11-01",
+    currentExpectedCompletionDate: "2026-11-01",
+    createdAt: "2025-03-20T00:00:00.000Z",
+    updatedAt: "2025-09-10T00:00:00.000Z",
   },
 ];

@@ -14,13 +14,18 @@ export const featureAssignments: FeatureAssignment[] = [
   { id: "fa-8", projectId: "project-2", nodeId: "node-2-medequip", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-05-11T00:00:00.000Z" },
   { id: "fa-9", projectId: "project-2", nodeId: "node-2-water", contractorId: "contractor-4", assignmentType: "SUBCONTRACTED", createdAt: "2025-05-18T00:00:00.000Z" },
 
-  // project-3 — new project, BuildCorp responsible for everything so far
-  { id: "fa-10", projectId: "project-3", nodeId: "node-3-survey", contractorId: "contractor-1", assignmentType: "RESPONSIBLE", createdAt: "2026-08-20T00:00:00.000Z" },
-  { id: "fa-11", projectId: "project-3", nodeId: "node-3-pipeline", contractorId: "contractor-1", assignmentType: "RESPONSIBLE", createdAt: "2026-08-20T00:00:00.000Z" },
+  // project-3 has not been awarded to a contractor yet — no feature
+  // assignments until that happens (see db/project-contractors.ts). ids
+  // "fa-10"/"fa-11" are intentionally unused here, kept free for whoever
+  // wires up post-award feature assignment next.
 
   // project-4 — SkyRise Builders responsible for the whole software build
   { id: "fa-12", projectId: "project-4", nodeId: "node-4-auth", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-10-16T00:00:00.000Z" },
   { id: "fa-13", projectId: "project-4", nodeId: "node-4-payments", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-10-16T00:00:00.000Z" },
   { id: "fa-14", projectId: "project-4", nodeId: "node-4-records", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-10-16T00:00:00.000Z" },
   { id: "fa-15", projectId: "project-4", nodeId: "node-4-deploy", contractorId: "contractor-3", assignmentType: "RESPONSIBLE", createdAt: "2025-10-16T00:00:00.000Z" },
+
+  // project-5 — ElectroWorks responsible directly for its own project (no further subcontracting)
+  { id: "fa-16", projectId: "project-5", nodeId: "node-5-wiring", contractorId: "contractor-2", assignmentType: "RESPONSIBLE", createdAt: "2025-03-20T00:00:00.000Z" },
+  { id: "fa-17", projectId: "project-5", nodeId: "node-5-scada", contractorId: "contractor-2", assignmentType: "RESPONSIBLE", createdAt: "2025-03-20T00:00:00.000Z" },
 ];

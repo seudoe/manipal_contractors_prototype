@@ -41,41 +41,55 @@ const EXTRA_NAV: Partial<
 export function RoleShell({
   role,
   userName,
+  orgName,
   children,
 }: {
   role: GlobalRole;
   userName: string;
+  /** e.g. the contractor org a CONTRACTOR user belongs to — shown under their name */
+  orgName?: string;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
   const base = `/${role.toLowerCase()}`;
-  
-  // inProject is no longer used for width, but we can keep it if needed.
-  // The global sidebar is always w-16 normally, expanding to w-56 on hover.
+
+  // Inside a project sub-route → sidebar collapses to icons-only (hover to expand).
+  // On any top-level global page (projects, profile, settings, notifications, etc.)
+  // the sidebar stays permanently expanded.
+  const inProject = pathname.includes(`${base}/project/`);
 
   return (
     <div className="flex flex-1 relative">
-      {/* Spacer to push main content to the right so it doesn't get covered by the collapsed sidebar */}
-      <div className="w-16 shrink-0" />
+      {/* Structural spacer — matches the sidebar's resting width so content never gets clipped */}
+      <div className={inProject ? "w-16 shrink-0" : "w-56 shrink-0"} />
 
       <aside
-        className="group absolute bottom-0 left-0 top-0 z-50 flex w-16 flex-col justify-between overflow-hidden border-r border-indigo-900 bg-indigo-950 py-6 transition-[width] duration-300 hover:w-56"
+        className={`group absolute bottom-0 left-0 top-0 z-50 flex flex-col justify-between overflow-hidden border-r border-indigo-900 bg-indigo-950 py-6 transition-[width] duration-300 ${
+          inProject ? "w-16 hover:w-56" : "w-56"
+        }`}
       >
         <div className="flex w-56 flex-col gap-6 px-3">
           <div className="flex items-center gap-3 px-1">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-900">
               <UserCircle size={24} className="text-indigo-300" />
             </div>
-            <div className="flex flex-col opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div
+              className={`flex flex-col transition-opacity duration-300 ${
+                inProject ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+              }`}
+            >
               <p className="text-xs font-semibold uppercase tracking-wide text-indigo-400/80">
                 {role}
               </p>
               <p className="truncate text-sm font-medium text-white">
                 {userName}
               </p>
+              {orgName && (
+                <p className="truncate text-xs text-indigo-300">{orgName}</p>
+              )}
             </div>
           </div>
-          
+
           <nav className="flex flex-col gap-1">
             {[...GLOBAL_NAV, ...(EXTRA_NAV[role] ?? [])].map((item) => {
               const href = `${base}/${item.segment}`;
@@ -93,7 +107,11 @@ export function RoleShell({
                   }`}
                 >
                   <Icon size={20} strokeWidth={2} className="shrink-0" />
-                  <span className="whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span
+                    className={`whitespace-nowrap transition-opacity duration-300 ${
+                      inProject ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+                    }`}
+                  >
                     {item.label}
                   </span>
                 </Link>
@@ -110,14 +128,18 @@ export function RoleShell({
               className="flex w-full items-center gap-3 rounded-lg px-2.5 py-2.5 text-sm font-medium text-indigo-300 transition-colors hover:bg-indigo-900 hover:text-white"
             >
               <LogOut size={20} strokeWidth={2} className="shrink-0" />
-              <span className="whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span
+                className={`whitespace-nowrap transition-opacity duration-300 ${
+                  inProject ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+                }`}
+              >
                 Log out
               </span>
             </button>
           </form>
         </div>
       </aside>
-      
+
       <main className="flex flex-1 flex-col p-8">{children}</main>
     </div>
   );

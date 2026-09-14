@@ -8,6 +8,7 @@ import type {
   ChangeReview,
   ChangeRiskScore,
 } from "@/types/change";
+import type { Notification } from "@/types/notification";
 
 import { users } from "./users";
 import { contractors } from "./contractors";
@@ -19,6 +20,9 @@ import { edges } from "./edges";
 import { featureAssignments } from "./feature-assignments";
 import { versions } from "./versions";
 import { changes, changeReviews, changeRiskScores } from "./changes";
+import { notifications } from "./notifications";
+import type { DailyReport } from "@/types/report";
+import { dailyReports } from "./reports";
 
 // ---- ANUBANDH prototype additions (plan.md/update (1).md) ----
 import type { Commitment, CommitmentCredential } from "@/types/commitment";
@@ -124,6 +128,21 @@ export function getContractorAncestors(contractorId: string): Contractor[] {
   return chain;
 }
 
+/**
+ * Contractors a stakeholder can award a project to as MAIN_CONTRACTOR:
+ * top-level orgs only (a stakeholder awards the main contractor, who then
+ * brings on their own subcontractors later — not the other way around),
+ * and only ones with a real linked login (`getUserById(c.userId)` resolves).
+ * That second check is what excludes the undisclosed/shell entities the
+ * collusion-detection feature surfaces (db/contractors.ts contractor-5/6) —
+ * they have a `userId` that doesn't match any row in db/users.ts on purpose.
+ */
+export function getAssignableContractors(): Contractor[] {
+  return contractors.filter(
+    (c) => c.parentContractorId === null && getUserById(c.userId) !== undefined
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Projects
 // ---------------------------------------------------------------------------
@@ -139,7 +158,8 @@ export function getProjectById(id: string): Project | undefined {
 /**
  * Projects visible to a given user, based on their role:
  * - STAKEHOLDER: projects they're listed on via project_stakeholders
- * - CONTRACTOR: projects their contractor org is linked to via project_contractors
+ * - CONTRACTOR: projects their contractor org is linked to via project_contractors,
+ *   minus any project superseded by that contractor's own partOfProjectId spin-off
  * - INSPECTOR: the spec doesn't define an inspector<->project link table
  *   (project_coding_spec.md never introduces one), so inspectors see every
  *   project for now. Revisit once/if that table is added to the spec.
@@ -161,7 +181,16 @@ export function getProjectsForUser(userId: string): Project[] {
     const projectIds = new Set(
       projectContractors.filter((pc) => pc.contractorId === contractor.id).map((pc) => pc.projectId)
     );
-    return projects.filter((p) => projectIds.has(p.id));
+    const visible = projects.filter((p) => projectIds.has(p.id));
+
+    // If this contractor's own spin-off project (partOfProjectId) is in
+    // their list, hide the parent it points at — otherwise the same work
+    // shows up twice (once as the real project, once as their spin-off).
+    // See types/project.ts#partOfProjectId.
+    const superseded = new Set(
+      visible.map((p) => p.partOfProjectId).filter((id): id is string => Boolean(id))
+    );
+    return visible.filter((p) => !superseded.has(p.id));
   }
 
   // INSPECTOR (or any future role) — no scoping table yet, see note above
@@ -182,7 +211,57 @@ export function getProjectContractors(projectId: string): (ProjectContractor & {
 
 export function getMainContractor(projectId: string): Contractor | undefined {
   const project = getProjectById(projectId);
-  return project ? getContractorById(project.mainContractorId) : undefined;
+  if (!project?.mainContractorId) return undefined;
+  return getContractorById(project.mainContractorId);
+}
+
+/**
+ * One-time award of a project's main contractor. No-ops (returns the
+ * project unchanged) if it's already been awarded — this is deliberately
+ * NOT a general "change the main contractor" update endpoint (spec section
+ * 5 says that must never exist); it only fires the very first time, from
+ * `mainContractorId: null`.
+ *
+ * Also links the contractor via project_contractors (MAIN_CONTRACTOR),
+ * flips status to "IN_PROGRESS", and notifies the contractor's user.
+ */
+export function assignMainContractor(
+  projectId: string,
+  contractorId: string,
+  actingUserId: string
+): Project | undefined {
+  const project = projects.find((p) => p.id === projectId);
+  const contractor = getContractorById(contractorId);
+  if (!project || !contractor) return undefined;
+  if (project.mainContractorId) return project; // already awarded — locked
+
+  const now = new Date().toISOString();
+  project.mainContractorId = contractorId;
+  project.status = "IN_PROGRESS";
+  project.updatedAt = now;
+
+  if (!projectContractors.some((pc) => pc.projectId === projectId && pc.contractorId === contractorId)) {
+    projectContractors.push({
+      id: `pc-assign-${projectId}-${contractorId}`,
+      projectId,
+      contractorId,
+      role: "MAIN_CONTRACTOR",
+      createdAt: now,
+    });
+  }
+
+  createNotification({
+    projectId,
+    recipientUserId: contractor.userId,
+    actorUserId: actingUserId,
+    type: "CONTRACTOR_ASSIGNED",
+    title: "New project awarded",
+    message: `Your company, ${contractor.name}, has been awarded as main contractor for "${project.name}".`,
+    entityType: "PROJECT",
+    entityId: projectId,
+  });
+
+  return project;
 }
 
 // ---------------------------------------------------------------------------
@@ -310,6 +389,53 @@ export function getSubcontractedNodeGroups(projectId: string): SubcontractedNode
     contractorName: getContractorById(contractorId)?.name ?? contractorId,
     nodeIds,
   }));
+}
+
+// ---------------------------------------------------------------------------
+// Notifications
+// ---------------------------------------------------------------------------
+
+/**
+ * spec section 22 — inspectors are excluded from user-change notifications
+ * as a product rule; nothing here enforces that yet since the only
+ * notification-producing action so far (assignMainContractor) targets a
+ * contractor specifically. Revisit if/when more actions call createNotification.
+ */
+export function createNotification(
+  data: Omit<Notification, "id" | "createdAt" | "readAt">
+): Notification {
+  const notification: Notification = {
+    id: `notif-${notifications.length + 1}`,
+    createdAt: new Date().toISOString(),
+    readAt: null,
+    ...data,
+  };
+  notifications.push(notification);
+  return notification;
+}
+
+export function getNotificationsForUser(userId: string): Notification[] {
+  return notifications
+    .filter((n) => n.recipientUserId === userId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export function getUnreadNotificationCount(userId: string): number {
+  return notifications.filter((n) => n.recipientUserId === userId && !n.readAt).length;
+}
+
+// ---------------------------------------------------------------------------
+// Daily reports
+// ---------------------------------------------------------------------------
+
+/**
+ * Demo placeholder: returns the same 3 hardcoded reports regardless of
+ * project — not filtered by projectId on purpose. Wire up real per-project
+ * filtering (`dailyReports.filter(r => r.projectId === projectId)`) once
+ * this needs to be more than a demo.
+ */
+export function getDailyReports(): DailyReport[] {
+  return dailyReports;
 }
 
 // ---------------------------------------------------------------------------
