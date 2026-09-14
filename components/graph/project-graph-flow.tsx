@@ -11,7 +11,7 @@ import {
   type NodeMouseHandler,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { X } from "lucide-react";
+import { X, Share2 } from "lucide-react";
 import type { GraphNode, GraphEdge } from "@/types/graph";
 import { layoutWithDagre, boundingBoxOf, NODE_WIDTH, NODE_HEIGHT } from "@/lib/graph/layout";
 import { FeatureNode, type FeatureNodeData } from "./feature-node";
@@ -34,10 +34,13 @@ export function ProjectGraphFlow({
   nodes,
   edges,
   groups,
+  assignableContractors,
 }: {
   nodes: EnrichedGraphNode[];
   edges: GraphEdge[];
   groups: SubcontractorGroup[];
+  /** only passed for a contractor session — gates the "Assign to other contractor" button */
+  assignableContractors?: { id: string; name: string }[];
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -139,7 +142,11 @@ export function ProjectGraphFlow({
       </ReactFlow>
 
       {selectedNode && (
-        <NodeDetailPanel node={selectedNode} onClose={() => setSelectedId(null)} />
+        <NodeDetailPanel
+          node={selectedNode}
+          onClose={() => setSelectedId(null)}
+          assignableContractors={assignableContractors}
+        />
       )}
     </div>
   );
@@ -148,9 +155,11 @@ export function ProjectGraphFlow({
 function NodeDetailPanel({
   node,
   onClose,
+  assignableContractors,
 }: {
   node: EnrichedGraphNode;
   onClose: () => void;
+  assignableContractors?: { id: string; name: string }[];
 }) {
   const metadataEntries = Object.entries(node.metadata ?? {});
 
@@ -192,6 +201,10 @@ function NodeDetailPanel({
         />
       )}
 
+      {assignableContractors && assignableContractors.length > 0 && (
+        <AssignFeatureControl contractors={assignableContractors} />
+      )}
+
       {metadataEntries.length > 0 && (
         <div>
           <p className="text-xs font-medium text-slate-400">Metadata</p>
@@ -221,6 +234,52 @@ function Field({ label, value }: { label: string; value: string }) {
     <div className="flex justify-between gap-2 text-xs">
       <span className="text-slate-500">{label}</span>
       <span className="font-medium text-slate-700 dark:text-slate-300">{value}</span>
+    </div>
+  );
+}
+
+/**
+ * Demo-only affordance — shows the contractor hierarchy is meant to keep
+ * going ("a contractor can hand this off to a sub-contractor, who can hand
+ * it off further"). Picking a contractor from the list does nothing; this
+ * is here to gesture at the idea in a demo, not to actually reassign work.
+ */
+function AssignFeatureControl({ contractors }: { contractors: { id: string; name: string }[] }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="relative border-t border-black/5 pt-3 dark:border-white/5">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-center gap-1.5 rounded-full border border-indigo-200 px-3 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-50 dark:border-indigo-800/50 dark:text-indigo-300 dark:hover:bg-indigo-950"
+      >
+        <Share2 size={13} />
+        Assign to other contractor
+      </button>
+
+      {open && (
+        <>
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 z-10 cursor-default"
+          />
+          <div className="absolute bottom-full left-0 z-20 mb-2 w-full rounded-lg border border-indigo-200 bg-white p-1.5 shadow-lg dark:border-indigo-800/50 dark:bg-slate-900">
+            {contractors.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setOpen(false)}
+                className="w-full rounded-md px-2.5 py-1.5 text-left text-xs text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

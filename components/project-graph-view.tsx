@@ -3,7 +3,10 @@ import {
   getFeatureAssignments,
   getSubcontractedNodeGroups,
   getUserById,
+  getContractorByUserId,
+  getOtherContractors,
 } from "@/db/queries";
+import { getSessionUser } from "@/lib/session";
 import { ProjectGraphFlow, type EnrichedGraphNode } from "@/components/graph/project-graph-flow";
 
 /**
@@ -12,7 +15,7 @@ import { ProjectGraphFlow, type EnrichedGraphNode } from "@/components/graph/pro
  * node opens its details; nodes handed off to a subcontractor are enclosed
  * in a light-bordered box (see db/queries.ts#getSubcontractedNodeGroups).
  */
-export function ProjectGraphView({ projectId }: { projectId: string }) {
+export async function ProjectGraphView({ projectId }: { projectId: string }) {
   const { nodes, edges } = getProjectGraph(projectId);
 
   if (nodes.length === 0) {
@@ -38,5 +41,21 @@ export function ProjectGraphView({ projectId }: { projectId: string }) {
 
   const groups = getSubcontractedNodeGroups(projectId);
 
-  return <ProjectGraphFlow nodes={enrichedNodes} edges={edges} groups={groups} />;
+  // Only a contractor session gets the "Assign to other contractor" button
+  // on a node's detail card — it's a no-op demo affordance (see
+  // components/graph/project-graph-flow.tsx), not real functionality.
+  const sessionUser = await getSessionUser();
+  const viewerContractor = sessionUser ? getContractorByUserId(sessionUser.id) : undefined;
+  const assignableContractors = viewerContractor
+    ? getOtherContractors(viewerContractor.id).map((c) => ({ id: c.id, name: c.name }))
+    : undefined;
+
+  return (
+    <ProjectGraphFlow
+      nodes={enrichedNodes}
+      edges={edges}
+      groups={groups}
+      assignableContractors={assignableContractors}
+    />
+  );
 }

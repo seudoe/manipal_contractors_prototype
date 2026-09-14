@@ -143,6 +143,18 @@ export function getAssignableContractors(): Contractor[] {
   );
 }
 
+/**
+ * Every real contractor except the given one — used for the "Assign to
+ * other contractor" demo affordance on a graph node (contractor role only,
+ * see components/graph/project-graph-flow.tsx). Unlike getAssignableContractors
+ * this isn't restricted to top-level orgs, since any contractor — including
+ * a subcontractor — can hand a feature further down to its own subcontractor.
+ * Still excludes the undisclosed/shell entities (no matching db/users.ts row).
+ */
+export function getOtherContractors(contractorId: string): Contractor[] {
+  return contractors.filter((c) => c.id !== contractorId && getUserById(c.userId) !== undefined);
+}
+
 // ---------------------------------------------------------------------------
 // Projects
 // ---------------------------------------------------------------------------

@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   Share2,
   FileWarning,
+  FolderPlus,
   type LucideIcon,
 } from "lucide-react";
 import { logout } from "@/app/actions";
@@ -36,6 +37,8 @@ const EXTRA_NAV: Partial<
     { label: "Override Audit", segment: "override-audit", icon: FileWarning },
     { label: "Collusion", segment: "collusion", icon: Share2 },
   ],
+  // Only stakeholders create projects — contractors are assigned to them.
+  STAKEHOLDER: [{ label: "New Project", segment: "new-project", icon: FolderPlus }],
 };
 
 export function RoleShell({
