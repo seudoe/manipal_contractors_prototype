@@ -11,11 +11,18 @@ import {
   type NodeMouseHandler,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { X, Share2 } from "lucide-react";
+import { X, Share2, GitCompare } from "lucide-react";
 import type { GraphNode, GraphEdge } from "@/types/graph";
 import { layoutWithDagre, boundingBoxOf, NODE_WIDTH, NODE_HEIGHT } from "@/lib/graph/layout";
+import {
+  effectsAtEntry,
+  compareWithOriginal,
+  type GraphChangeHistory,
+} from "@/lib/graph/change-history";
+import { severityColor } from "@/lib/graph/severity-color";
 import { FeatureNode, type FeatureNodeData } from "./feature-node";
 import { GroupNode, type GroupNodeData } from "./group-node";
+import { ChangeHistoryList } from "./change-history-list";
 
 const nodeTypes = { feature: FeatureNode, group: GroupNode };
 
@@ -30,19 +37,38 @@ export interface SubcontractorGroup {
   nodeIds: string[];
 }
 
+/**
+ * Unified comparison state: "none", "original" (max severity across the
+ * whole chain), or a specific entry index — clicking a Change history row
+ * shows "the graph at that point in time" using just that entry's effects.
+ * "Compare with Last Change" is the same thing as clicking entry 0.
+ */
+type CompareMode = "none" | "original" | number;
+
 export function ProjectGraphFlow({
   nodes,
   edges,
   groups,
   assignableContractors,
+  changeHistory,
 }: {
   nodes: EnrichedGraphNode[];
   edges: GraphEdge[];
   groups: SubcontractorGroup[];
   /** only passed for a contractor session — gates the "Assign to other contractor" button */
   assignableContractors?: { id: string; name: string }[];
+  /** only present for projects with hardcoded change data (see lib/graph/change-history.ts) */
+  changeHistory?: GraphChangeHistory;
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [compareMode, setCompareMode] = useState<CompareMode>("none");
+
+  const severityByNode = useMemo(() => {
+    if (compareMode === "none" || !changeHistory) return null;
+    return compareMode === "original"
+      ? compareWithOriginal(changeHistory.effects)
+      : effectsAtEntry(changeHistory.effects, compareMode);
+  }, [compareMode, changeHistory]);
 
   const { flowNodes, flowEdges } = useMemo(() => {
     // The root PROJECT node is the sink everything else feeds into, so it
@@ -94,7 +120,12 @@ export function ProjectGraphFlow({
         parentId: groupId ? `group-${groupId}` : undefined,
         extent: groupId ? "parent" : undefined,
         style: { width: NODE_WIDTH, height: NODE_HEIGHT },
-        data: { label: node.name, status: node.status, nodeType: node.type } satisfies FeatureNodeData,
+        data: {
+          label: node.name,
+          status: node.status,
+          nodeType: node.type,
+          changeColor: severityByNode ? severityColor(severityByNode.get(node.id)) : undefined,
+        } satisfies FeatureNodeData,
         draggable: true,
       };
     });
@@ -113,7 +144,7 @@ export function ProjectGraphFlow({
     }));
 
     return { flowNodes: [...groupNodes, ...featureNodes], flowEdges: rfEdges };
-  }, [nodes, edges, groups]);
+  }, [nodes, edges, groups, severityByNode]);
 
   const selectedNode = selectedId ? nodes.find((n) => n.id === selectedId) : undefined;
 
@@ -122,33 +153,86 @@ export function ProjectGraphFlow({
     setSelectedId(node.id);
   };
 
-  return (
-    <div className="relative h-[70vh] w-full overflow-hidden rounded-xl border border-indigo-200 dark:border-indigo-800/40">
-      <ReactFlow
-        nodes={flowNodes}
-        edges={flowEdges}
-        nodeTypes={nodeTypes}
-        onNodeClick={handleNodeClick}
-        onPaneClick={() => setSelectedId(null)}
-        fitView
-        minZoom={0.3}
-        maxZoom={1.5}
-        nodesConnectable={false}
-        elementsSelectable
-        proOptions={{ hideAttribution: true }}
-      >
-        <Background gap={20} size={1} />
-        <Controls showInteractive={false} />
-      </ReactFlow>
+  function toggleCompare(mode: "original" | number) {
+    setCompareMode((current) => (current === mode ? "none" : mode));
+  }
 
-      {selectedNode && (
-        <NodeDetailPanel
-          node={selectedNode}
-          onClose={() => setSelectedId(null)}
-          assignableContractors={assignableContractors}
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="relative h-[70vh] w-full overflow-hidden rounded-xl border border-indigo-200 dark:border-indigo-800/40">
+        <ReactFlow
+          nodes={flowNodes}
+          edges={flowEdges}
+          nodeTypes={nodeTypes}
+          onNodeClick={handleNodeClick}
+          onPaneClick={() => setSelectedId(null)}
+          fitView
+          minZoom={0.3}
+          maxZoom={1.5}
+          nodesConnectable={false}
+          elementsSelectable
+          proOptions={{ hideAttribution: true }}
+        >
+          <Background gap={20} size={1} />
+          <Controls showInteractive={false} />
+        </ReactFlow>
+
+        {changeHistory && (
+          <div className="absolute left-3 top-3 z-10 flex gap-2">
+            <CompareButton
+              active={compareMode === "original"}
+              onClick={() => toggleCompare("original")}
+            >
+              Compare with Original
+            </CompareButton>
+            <CompareButton active={compareMode === 0} onClick={() => toggleCompare(0)}>
+              Compare with Last Change
+            </CompareButton>
+          </div>
+        )}
+
+        {selectedNode && (
+          <NodeDetailPanel
+            node={selectedNode}
+            onClose={() => setSelectedId(null)}
+            assignableContractors={assignableContractors}
+          />
+        )}
+      </div>
+
+      {changeHistory && (
+        <ChangeHistoryList
+          history={changeHistory}
+          activeIndex={typeof compareMode === "number" ? compareMode : null}
+          onSelect={(index) => toggleCompare(index)}
         />
       )}
     </div>
+  );
+}
+
+function CompareButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium shadow-sm transition-colors ${
+        active
+          ? "border-indigo-600 bg-indigo-600 text-white"
+          : "border-indigo-200 bg-white text-indigo-700 hover:bg-indigo-50 dark:border-indigo-800/50 dark:bg-slate-900 dark:text-indigo-300 dark:hover:bg-indigo-950"
+      }`}
+    >
+      <GitCompare size={13} />
+      {children}
+    </button>
   );
 }
 

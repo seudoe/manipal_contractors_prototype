@@ -7,6 +7,7 @@ import {
   getOtherContractors,
 } from "@/db/queries";
 import { getSessionUser } from "@/lib/session";
+import { getGraphChangeHistory } from "@/lib/graph/change-history";
 import { ProjectGraphFlow, type EnrichedGraphNode } from "@/components/graph/project-graph-flow";
 
 /**
@@ -50,12 +51,15 @@ export async function ProjectGraphView({ projectId }: { projectId: string }) {
     ? getOtherContractors(viewerContractor.id).map((c) => ({ id: c.id, name: c.name }))
     : undefined;
 
+  const changeHistory = getGraphChangeHistory(projectId);
+
   return (
     <ProjectGraphFlow
       nodes={enrichedNodes}
       edges={edges}
       groups={groups}
       assignableContractors={assignableContractors}
+      changeHistory={changeHistory}
     />
   );
 }

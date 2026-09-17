@@ -17,6 +17,8 @@ export interface FeatureNodeData extends Record<string, unknown> {
   label: string;
   status: GraphNodeStatus;
   nodeType: GraphNodeType;
+  /** hex color from lib/graph/severity-color.ts — set only while a "Compare with…" mode is active */
+  changeColor?: string;
 }
 
 export function FeatureNode({ data, selected }: NodeProps & { data: FeatureNodeData }) {
@@ -24,10 +26,17 @@ export function FeatureNode({ data, selected }: NodeProps & { data: FeatureNodeD
 
   return (
     <div
-      className={`flex h-full w-full cursor-pointer items-center gap-2 rounded-lg border bg-white px-3 py-2 shadow-sm transition-shadow hover:shadow-md dark:bg-slate-900 ${
-        selected
-          ? "border-black ring-2 ring-black/20 dark:border-white dark:ring-white/20"
-          : "border-black/15 dark:border-indigo-800/50"
+      style={
+        data.changeColor
+          ? { borderColor: data.changeColor, backgroundColor: `${data.changeColor}14` }
+          : undefined
+      }
+      className={`flex h-full w-full cursor-pointer items-center gap-2 rounded-lg border-2 bg-white px-3 py-2 shadow-sm transition-shadow hover:shadow-md dark:bg-slate-900 ${
+        data.changeColor
+          ? ""
+          : selected
+            ? "border-black ring-2 ring-black/20 dark:border-white dark:ring-white/20"
+            : "border-black/15 dark:border-indigo-800/50"
       } ${isRoot ? "font-semibold" : ""}`}
     >
       {/*
